@@ -14,7 +14,7 @@ const LoginScreen = ({ navigation }) => {
       return;
     }
 
-    // Simulate authentication (you can replace this with real authentication logic)
+    // Simulate authentication
     if (phonenumbers === '0000' && password === 'password') {
       Alert.alert('Đăng nhập thành công', 'Chào mừng Nhóm 18', [
         { text: 'OK', onPress: () => navigation.navigate('Home') },

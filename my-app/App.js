@@ -19,7 +19,8 @@ const App = () => {
           name="Home"
           component={HomeScreen}
           options={{
-            title: 'Home',
+            title: 'Header',
+            headerShown: false,
             headerBackVisible: false,
             //headerLeft: () => {return null;}
           }}
