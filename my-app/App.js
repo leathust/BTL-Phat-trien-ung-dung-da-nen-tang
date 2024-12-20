@@ -13,12 +13,16 @@ const App = () => {
         <Stack.Screen
           name="Login"
           component={LoginScreen}
-          options={{ title: 'Login' }}
+          options={{ title: '' }}
         />
         <Stack.Screen
           name="Home"
           component={HomeScreen}
-          options={{ title: 'Home' }}
+          options={{
+            title: 'Home',
+            headerBackVisible: false,
+            //headerLeft: () => {return null;}
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

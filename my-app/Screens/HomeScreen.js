@@ -5,7 +5,7 @@ const HomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Home Screen</Text>
-      <Button title="Go Back" onPress={() => navigation.goBack()} />
+      {/* <Button title="Go Back" onPress={() => navigation.goBack()} /> */}
     </View>
   );
 };
