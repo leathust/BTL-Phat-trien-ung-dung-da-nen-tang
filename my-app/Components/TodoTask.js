@@ -1,23 +1,32 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { TaskContext } from '../Context/TaskContext';
 
-const TodoTask = ({navigation}) => {
+const TodoTask = ({navigation, route}) => {
   const { tasks, addTask, removeTask, toggleTaskCompletion } = useContext(TaskContext);
+  const { listName, listId } = route.params;
+
+  //console.log(listId);
+  // Automatically set the title when the screen is navigated to
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: listName, // Dynamically set the title here
+    });
+  }, [listName]); // This will run when navigation or screenTitle changes
 
   const handleFabPress = () => {
-    navigation.navigate('AddItemForm');
+    navigation.navigate('AddItemForm', {listId});
   };
 
   return (
     <View style={styles.container}>
       <FlatList
-        data={tasks}
+        data={tasks.filter(item => item.listId === listId)}
         renderItem={({ item, index }) => (
           <View style={styles.taskContainer}>
             <Text style={styles.task}>{item.count + ' ' + item.unit + ' ' + item.text}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => removeTask(index)}>
-                <Text style={styles.removeButtonText}>Loai</Text>
+            <TouchableOpacity style={styles.button} onPress={() => removeTask(item.id)}>
+                <Text style={styles.removeButtonText}>Bỏ</Text>
             </TouchableOpacity>
           </View>
         )}
@@ -62,7 +71,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#fff',
+    backgroundColor: 'moccasin',
     marginVertical: 5,
     borderRadius: 5,
     borderColor: '#ddd',
@@ -85,7 +94,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 8,
-    backgroundColor: '#6200ea', // Purple color for the button
+    backgroundColor: 'mediumpurple', // Purple color for the button
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -93,7 +102,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 16,
     right: 16,
-    backgroundColor: '#6200ee',
+    backgroundColor: 'lightcoral',
     width: 56,
     height: 56,
     borderRadius: 28,

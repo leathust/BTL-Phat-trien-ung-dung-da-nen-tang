@@ -15,7 +15,7 @@ const ShopListScreen = ({ navigation }) => {
         <TaskProvider>
             <ListStack.Navigator initialRouteName='AllList'>
                 <ListStack.Screen name='AllList' component={AllList} options={{ headerShown: false }} />
-                <ListStack.Screen name='TodoTask' component={TodoTask} options={{ headerTitle: "Ngày 1-12-2024" }} />
+                <ListStack.Screen name='TodoTask' component={TodoTask} />
                 <ListStack.Screen name='AddItemForm' component={FormWithAlert} options={{ headerShown: true }} />
             </ListStack.Navigator>
         </TaskProvider>

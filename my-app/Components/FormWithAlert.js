@@ -1,26 +1,17 @@
 import React, { useState, useContext } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';  // Make sure to install @react-native-picker/picker
+import { Picker } from '@react-native-picker/picker'; 
 
 import { TaskContext } from '../Context/TaskContext';
 
-const FormWithAlert = ({ navigation }) => {
+const FormWithAlert = ({ navigation , route}) => {
   const { addTask } = useContext(TaskContext);
+  const { listId } = route.params;
 
   const [itemName, setItemName] = useState('');
   const [count, setCount] = useState(0);
   const [unit, setUnit] = useState(''); // Optional field, initialized with an empty string
   const availableUnits = ['kg', 'gam', 'bó', 'củ', 'quả', 'con', 'chai', 'lit', 'a', 'b', 'c', 'd', 'e', 'f']; // List of allowed units
-  //const [newTask, setNewTask] = useState('');
-
-  // const handleAddTask = () => {
-  //   if (!newTask.trim()) console.log('blank newTask!');
-  //   if (newTask.trim()) {
-  //     const task = { id: Math.random().toString(), text: newTask, completed: false };
-  //     addTask(task);
-  //     setNewTask('');
-  //   }
-  // };
 
   const handleSubmit = () => {
     if (itemName === '' || count === '' || unit === '') {
@@ -28,7 +19,7 @@ const FormWithAlert = ({ navigation }) => {
     } else {
       // Alert.alert('Success', 'Form submitted successfully');
       itemName.trim();
-      const task = { id: Math.random().toString(), text: itemName, count: count, unit: unit, completed: false };
+      const task = { id: Math.random().toString(), listId: listId, text: itemName, count: count, unit: unit, completed: false };
       addTask(task);
       setItemName('');
       setCount('');

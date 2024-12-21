@@ -6,12 +6,17 @@ const TaskContext = createContext();
 
 // Create a provider component
 const TaskProvider = ({ children }) => {
-    const [tasks, setTasks] = useState([]);
-    const [lists, setLists] = useState([{listId: 1, name: 'mua sắm Tết 2025'}]);
+    const [tasks, setTasks] = useState([{id: 1, listId: 1, text: 'Rau ngót', count: 4, unit: 'bó'}, 
+                                        {id: 2, listId: 1, text: 'Trứng', count: 2, unit: 'quả'},
+                                        {id: 3, listId: 2, text: 'Thịt lợn', count: 5, unit: 'kg'},
+                                        {id: 4, listId: 2, text: 'Rượu nếp', count: 2, unit: 'chai'}
+                                        ]);
+    const [lists, setLists] = useState([{listId: 1, name: 'mua sắm Tết 2025'}, {listId: 2, name: 'Chuẩn bị thi CK'}]);
 
     // Function to add a task
     const addTask = (task) => {
         setTasks([...tasks, task]);
+        console.log(tasks);             // chú ý sẽ ko console.log ra task mới thêm vào nhất được, lý do là vì setTasks là async.
     };
 
     // Function to add a list
@@ -20,14 +25,14 @@ const TaskProvider = ({ children }) => {
     };
 
     // Function to remove a task
-    const removeTask = (index) => {
-        const newTasks = tasks.filter((_, taskIndex) => taskIndex !== index);
+    const removeTask = (id) => {
+        const newTasks = tasks.filter(item => item.id !== id);
         setTasks(newTasks);
       };
 
     // Function to remove a list
-    const removeList = (index) => {
-        const newLists = lists.filter((_, listIndex) => listIndex !== index);
+    const removeList = (id) => {
+        const newLists = lists.filter(item => item.listId !== id);
         setLists(newLists);
     }
 
