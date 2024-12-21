@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, FlatList, Button, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 
-const TodoTask = () => {
+const TodoTask = ({navigation, route}) => {
   const [task, setTask] = useState(''); // Input field for new task
   const [tasks, setTasks] = useState([]); // List of tasks
 
   // Function to add a new task
-  const addTask = () => {
-    if (task) {
+  const addTask = (t) => {
+    if (t) {
+      setTask(t);
       setTasks([...tasks, task]);
-      setTask(''); // Clear the input field after adding the task
+      //setTask(''); // Clear the input field after adding the task
     }
   };
 
@@ -19,18 +20,12 @@ const TodoTask = () => {
     setTasks(newTasks);
   };
 
+  const handleFabPress = () => {
+    navigation.navigate('AddItemForm', {addTask});
+  };
+
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter a new task"
-        value={task}
-        onChangeText={setTask}
-      />
-
-      <Button title="Add New" onPress={addTask} />
-
-
       <FlatList
         data={tasks}
         renderItem={({ item, index }) => (
@@ -44,6 +39,12 @@ const TodoTask = () => {
         keyExtractor={(item, index) => index.toString()}
         style={styles.taskList}
       />
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={handleFabPress}
+      >
+        <Text style={styles.fabText}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -102,6 +103,21 @@ const styles = StyleSheet.create({
     backgroundColor: '#6200ea', // Purple color for the button
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+    backgroundColor: '#6200ee',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  fabText: {
+    color: '#fff',
+    fontSize: 24,
   },
 });
 

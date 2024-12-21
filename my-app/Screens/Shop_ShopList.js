@@ -1,10 +1,9 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native';
+import { Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import TodoTask from '../Components/TodoTask';
-import { HeaderShownContext, HeaderTitle } from '@react-navigation/elements';
+import FormWithAlert from '../Components/FormWithAlert';
 const ListStack = createNativeStackNavigator();
 
 const AllList = ({navigation}) => {
@@ -17,23 +16,12 @@ const AllList = ({navigation}) => {
 
 const ShopListScreen = () => {
   return (
-    <NavigationIndependentTree>
-    <NavigationContainer>
         <ListStack.Navigator initialRouteName='AllList'>
             <ListStack.Screen name='AllList' component={AllList} options={{headerShown: false}}/>
-            <ListStack.Screen name='TodoTask' component={() => (<TodoTask />)} options={{headerTitle: "Ngày 1-12-2024"}} />
+            <ListStack.Screen name='TodoTask' component={TodoTask} options={{headerTitle: "Ngày 1-12-2024"}} />
+            <ListStack.Screen name='AddItemForm' component={FormWithAlert} options={{headerShown: true}}/>
         </ListStack.Navigator>
-    </NavigationContainer>
-    </NavigationIndependentTree>
   );
 };
-
-const styles = StyleSheet.create({
-    screen: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-});
 
 export default ShopListScreen;

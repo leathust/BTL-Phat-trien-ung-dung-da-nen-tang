@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native';
+import { StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import ShopListScreen from './Shop_ShopList';

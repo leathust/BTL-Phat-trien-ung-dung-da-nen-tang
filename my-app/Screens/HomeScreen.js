@@ -23,11 +23,8 @@ function UserStatusBar() {
   );
 }
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   return (
-    <NavigationIndependentTree>
-      <NavigationContainer>
-        <UserStatusBar />
         <Tab.Navigator
           initialRouteName="Mua sắm"
           tabBarOptions={{
@@ -47,8 +44,6 @@ const HomeScreen = () => {
           <Tab.Screen name="Mua sắm" component={ShopScreen} />
           <Tab.Screen name="Thực phẩm" component={FoodScreen} />
         </Tab.Navigator>
-      </NavigationContainer>
-    </NavigationIndependentTree>
   );
 };
 

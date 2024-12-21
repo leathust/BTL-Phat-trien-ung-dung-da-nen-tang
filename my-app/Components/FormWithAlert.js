@@ -1,35 +1,40 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert, Text } from 'react-native';
 
-const FormWithAlert = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+const FormWithAlert = ({navigation}) => {
+  const [itemName, setItemName] = useState('');
+  const [count, setCount] = useState('');
+  const [newItem, setNewItem] = useState({});
 
   const handleSubmit = () => {
-    if (name === '' || email === '') {
+    if (itemName === '' || count === '') {
       Alert.alert('Error', 'Please fill in all fields');
     } else {
-      Alert.alert('Success', 'Form submitted successfully');
+      // Alert.alert('Success', 'Form submitted successfully');
+      setNewItem({
+        name: itemName,
+        count: count
+      });
+      navigation.params(newItem);
+      navigation.goBack();
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Enter Name:</Text>
       <TextInput
         style={styles.input}
-        value={name}
-        onChangeText={setName}
-        placeholder="Your Name"
+        value={itemName}
+        onChangeText={setItemName}
+        placeholder="Tên thực phẩm"
       />
 
-      <Text style={styles.label}>Enter Email:</Text>
       <TextInput
         style={styles.input}
-        value={email}
-        onChangeText={setEmail}
-        placeholder="Your Email"
-        keyboardType="email-address"
+        value={count}
+        onChangeText={setCount}
+        placeholder="Lượng"
+        keyboardType="numeric"
       />
 
       <Button title="Submit" onPress={handleSubmit} />
@@ -42,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: 'rgba(50, 0, 0, 0.5)',
   },
   label: {
     fontSize: 18,
