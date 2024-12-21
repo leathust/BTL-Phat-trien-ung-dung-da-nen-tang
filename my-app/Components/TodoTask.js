@@ -1,9 +1,9 @@
-import React, { useState, useContext, useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import React, { useContext, useLayoutEffect } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TaskContext } from '../Context/TaskContext';
 
-const TodoTask = ({navigation, route}) => {
+const TodoTask = ({ navigation, route }) => {
   const { tasks, addTask, removeTask, toggleTaskCompletion } = useContext(TaskContext);
   const { listName, listId } = route.params;
 
@@ -16,7 +16,7 @@ const TodoTask = ({navigation, route}) => {
   }, [listName]); // This will run when navigation or screenTitle changes
 
   const handleFabPress = () => {
-    navigation.navigate('AddItemForm', {listId});
+    navigation.navigate('AddItemForm', { listId });
   };
 
   return (
@@ -24,11 +24,15 @@ const TodoTask = ({navigation, route}) => {
       <FlatList
         data={tasks.filter(item => item.listId === listId)}
         renderItem={({ item, index }) => (
-          <View style={styles.taskContainer}>
-            <Text style={styles.task}>{item.count + ' ' + item.unit + ' ' + item.text}</Text>
+          <View style={[styles.taskContainer, item.completed && styles.completedTaskContainer]}>
+            <TouchableOpacity onPress={() => toggleTaskCompletion(item.id)}>
+              <Text style={[styles.taskText, item.completed && styles.completedTask]}>
+                {item.count + ' ' + item.unit + ' ' + item.text}
+              </Text>
+            </TouchableOpacity>
             <TouchableOpacity onPress={() => removeTask(item.id)}>
-                {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
-                <Icon name="trash" size={35} color="purple" />
+              {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
+              <Icon name="trash" size={35} color="purple" />
             </TouchableOpacity>
           </View>
         )}
@@ -79,8 +83,23 @@ const styles = StyleSheet.create({
     borderColor: '#ddd',
     borderWidth: 1,
   },
+  completedTaskContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: 'gray',
+    marginVertical: 5,
+    borderRadius: 5,
+    borderColor: '#ddd',
+    borderWidth: 1,
+  },
   task: {
     fontSize: 18,
+  },
+  completedTask: {
+    textDecorationLine: 'line-through',
+    color: '#bbb',
   },
   removeButton: {
     backgroundColor: '#ff4d4d',
