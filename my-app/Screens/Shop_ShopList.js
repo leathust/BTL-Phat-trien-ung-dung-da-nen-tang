@@ -8,13 +8,13 @@ const ListStack = createNativeStackNavigator();
 
 const AllList = ({navigation}) => {
     return (
-        <TouchableOpacity onPress={() => navigation.navigate('TodoTask')}>
+        <TouchableOpacity onPress={() => navigation.navigate('Setting')}>
             <Text> Ngày 1-12-2024 </Text>
         </TouchableOpacity>
     );
 }
 
-const ShopListScreen = () => {
+const ShopListScreen = ({navigation}) => {
   return (
         <ListStack.Navigator initialRouteName='AllList'>
             <ListStack.Screen name='AllList' component={AllList} options={{headerShown: false}}/>

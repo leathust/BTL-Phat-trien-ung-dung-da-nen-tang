@@ -9,7 +9,7 @@ import StatisticScreen from './Shop_Statistic';
 const Drawer = createDrawerNavigator();
 
 
-const ShopScreen = () => {
+const ShopScreen = ({navigation}) => {
   return (
         <Drawer.Navigator initialRouteName="Danh sách mua sắm">
           <Drawer.Screen name="Danh sách mua sắm" component={ShopListScreen}/>
