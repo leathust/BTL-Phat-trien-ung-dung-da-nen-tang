@@ -6,10 +6,10 @@ const TaskContext = createContext();
 
 // Create a provider component
 const TaskProvider = ({ children }) => {
-    const [tasks, setTasks] = useState([{id: 1, listId: 1, text: 'Rau ngót', count: 4, unit: 'bó'}, 
-                                        {id: 2, listId: 1, text: 'Trứng', count: 2, unit: 'quả'},
-                                        {id: 3, listId: 2, text: 'Thịt lợn', count: 5, unit: 'kg'},
-                                        {id: 4, listId: 2, text: 'Rượu nếp', count: 2, unit: 'chai'}
+    const [tasks, setTasks] = useState([{id: 1, listId: 1, text: 'Rau ngót', count: 4, unit: 'bó', completed: false}, 
+                                        {id: 2, listId: 1, text: 'Trứng', count: 2, unit: 'quả', completed: false},
+                                        {id: 3, listId: 2, text: 'Thịt lợn', count: 5, unit: 'kg', completed: false},
+                                        {id: 4, listId: 2, text: 'Rượu nếp', count: 2, unit: 'chai', completed: false}
                                         ]);
     const [lists, setLists] = useState([{listId: 1, name: 'mua sắm Tết 2025'}, {listId: 2, name: 'Chuẩn bị thi CK'}]);
 
@@ -32,6 +32,8 @@ const TaskProvider = ({ children }) => {
 
     // Function to remove a list
     const removeList = (id) => {
+        const newTasks = tasks.filter(item => item.listId !== id);
+        setTasks(newTasks);
         const newLists = lists.filter(item => item.listId !== id);
         setLists(newLists);
     }

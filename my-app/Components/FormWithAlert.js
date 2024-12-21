@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker'; 
+import { Picker } from '@react-native-picker/picker';
 
 import { TaskContext } from '../Context/TaskContext';
 
-const FormWithAlert = ({ navigation , route}) => {
+const FormWithAlert = ({ navigation, route }) => {
   const { addTask } = useContext(TaskContext);
   const { listId } = route.params;
 

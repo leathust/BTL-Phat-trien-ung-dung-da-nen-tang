@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { TaskContext } from '../Context/TaskContext';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const AllList = ({ navigation }) => {
     const { lists, addList, removeList } = useContext(TaskContext);
@@ -16,9 +17,10 @@ const AllList = ({ navigation }) => {
                     <TouchableOpacity onPress={() => navigation.navigate('TodoTask', { listName: item.name, listId: item.listId })}>
                         <View style={styles.taskContainer}>
                             <Text style={styles.task}>{item.name}</Text>
-                            {/*<TouchableOpacity style={styles.button} onPress={() => removeTask(index)}>
-                        <Text style={styles.removeButtonText}>Loai</Text>
-                    </TouchableOpacity>*/}
+                            <TouchableOpacity onPress={() => removeList(item.listId)}>
+                                            {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
+                                            <Icon name="trash" size={35} color="purple" />
+                                        </TouchableOpacity>
                         </View>
                     </TouchableOpacity>
                 )}
@@ -27,7 +29,7 @@ const AllList = ({ navigation }) => {
             />
             <TouchableOpacity
                 style={styles.fab}
-                onPress={() => { return null; }}
+                onPress={() => navigation.navigate('AddListForm')}
             >
                 <Text style={styles.fabText}>+</Text>
             </TouchableOpacity>
@@ -65,11 +67,11 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 10,
-        backgroundColor: '#fff',
+        backgroundColor: 'seashell',
         marginVertical: 5,
         borderRadius: 5,
-        borderColor: '#ddd',
-        borderWidth: 1,
+        borderColor: 'salmon',
+        borderWidth: 2,
     },
     task: {
         fontSize: 18,

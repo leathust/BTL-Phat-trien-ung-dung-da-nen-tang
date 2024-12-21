@@ -1,5 +1,6 @@
 import React, { useState, useContext, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { TaskContext } from '../Context/TaskContext';
 
 const TodoTask = ({navigation, route}) => {
@@ -25,8 +26,9 @@ const TodoTask = ({navigation, route}) => {
         renderItem={({ item, index }) => (
           <View style={styles.taskContainer}>
             <Text style={styles.task}>{item.count + ' ' + item.unit + ' ' + item.text}</Text>
-            <TouchableOpacity style={styles.button} onPress={() => removeTask(item.id)}>
-                <Text style={styles.removeButtonText}>Bỏ</Text>
+            <TouchableOpacity onPress={() => removeTask(item.id)}>
+                {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
+                <Icon name="trash" size={35} color="purple" />
             </TouchableOpacity>
           </View>
         )}
