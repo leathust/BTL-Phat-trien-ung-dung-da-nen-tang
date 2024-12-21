@@ -10,7 +10,7 @@ const FormWithAlert = ({ navigation }) => {
   const [itemName, setItemName] = useState('');
   const [count, setCount] = useState(0);
   const [unit, setUnit] = useState(''); // Optional field, initialized with an empty string
-  const availableUnits = ['kg', 'gam', 'bó', 'củ', 'quả', 'con', 'chai', 'lit']; // List of allowed units
+  const availableUnits = ['kg', 'gam', 'bó', 'củ', 'quả', 'con', 'chai', 'lit', 'a', 'b', 'c', 'd', 'e', 'f']; // List of allowed units
   //const [newTask, setNewTask] = useState('');
 
   // const handleAddTask = () => {

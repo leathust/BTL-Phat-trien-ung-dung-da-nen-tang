@@ -4,17 +4,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import TodoTask from '../Components/TodoTask';
 import FormWithAlert from '../Components/FormWithAlert';
+import AllList from '../Components/AllList';
+
 const ListStack = createNativeStackNavigator();
 
 import { TaskProvider } from '../Context/TaskContext';
-
-const AllList = ({ navigation }) => {
-    return (
-        <TouchableOpacity onPress={() => navigation.navigate('TodoTask')}>
-            <Text> Ngày 1-12-2024 </Text>
-        </TouchableOpacity>
-    );
-}
 
 const ShopListScreen = ({ navigation }) => {
     return (
