@@ -1,22 +1,41 @@
-import React, { useState } from 'react';
-import { View, TextInput, Button, StyleSheet, Alert, Text } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { Picker } from '@react-native-picker/picker';  // Make sure to install @react-native-picker/picker
 
-const FormWithAlert = ({navigation}) => {
+import { TaskContext } from '../Context/TaskContext';
+
+const FormWithAlert = ({ navigation }) => {
+  const { addTask } = useContext(TaskContext);
+
   const [itemName, setItemName] = useState('');
-  const [count, setCount] = useState('');
-  const [newItem, setNewItem] = useState({});
+  const [count, setCount] = useState(0);
+  const [unit, setUnit] = useState(''); // Optional field, initialized with an empty string
+  const availableUnits = ['kg', 'gam', 'bó', 'củ', 'quả', 'con', 'chai', 'lit']; // List of allowed units
+  //const [newTask, setNewTask] = useState('');
+
+  // const handleAddTask = () => {
+  //   if (!newTask.trim()) console.log('blank newTask!');
+  //   if (newTask.trim()) {
+  //     const task = { id: Math.random().toString(), text: newTask, completed: false };
+  //     addTask(task);
+  //     setNewTask('');
+  //   }
+  // };
 
   const handleSubmit = () => {
-    if (itemName === '' || count === '') {
+    if (itemName === '' || count === '' || unit === '') {
       Alert.alert('Error', 'Please fill in all fields');
     } else {
       // Alert.alert('Success', 'Form submitted successfully');
-      setNewItem({
-        name: itemName,
-        count: count
-      });
-      navigation.params(newItem);
+      itemName.trim();
+      const task = { id: Math.random().toString(), text: itemName, count: count, unit: unit, completed: false };
+      addTask(task);
+      setItemName('');
+      setCount('');
       navigation.goBack();
+      // setNewTask(itemName);
+      // handleAddTask();
+      // navigation.goBack();
     }
   };
 
@@ -37,6 +56,17 @@ const FormWithAlert = ({navigation}) => {
         keyboardType="numeric"
       />
 
+      <Picker
+        selectedValue={unit}
+        onValueChange={(itemValue) => setUnit(itemValue)}
+        style={styles.picker}
+      >
+        <Picker.Item label="Đơn vị" value="" />
+        {availableUnits.map((unitOption, index) => (
+          <Picker.Item key={index} label={unitOption} value={unitOption} />
+        ))}
+      </Picker>
+
       <Button title="Submit" onPress={handleSubmit} />
     </View>
   );
@@ -47,7 +77,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 16,
-    backgroundColor: 'rgba(50, 0, 0, 0.5)',
+    backgroundColor: 'rgba(200, 0, 0, 0.5)',
   },
   label: {
     fontSize: 18,
@@ -62,6 +92,14 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingLeft: 10,
   },
+  picker: {
+    width: '90%',
+    height: 55,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    marginBottom: 16,
+
+  }
 });
 
 export default FormWithAlert;

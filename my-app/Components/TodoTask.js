@@ -1,27 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { TaskContext } from '../Context/TaskContext';
 
-const TodoTask = ({navigation, route}) => {
-  const [task, setTask] = useState(''); // Input field for new task
-  const [tasks, setTasks] = useState([]); // List of tasks
-
-  // Function to add a new task
-  const addTask = (t) => {
-    if (t) {
-      setTask(t);
-      setTasks([...tasks, task]);
-      //setTask(''); // Clear the input field after adding the task
-    }
-  };
-
-  // Function to remove a task
-  const removeTask = (index) => {
-    const newTasks = tasks.filter((_, taskIndex) => taskIndex !== index);
-    setTasks(newTasks);
-  };
+const TodoTask = ({navigation}) => {
+  const { tasks, addTask, removeTask, toggleTaskCompletion } = useContext(TaskContext);
 
   const handleFabPress = () => {
-    navigation.navigate('AddItemForm', {addTask});
+    navigation.navigate('AddItemForm');
   };
 
   return (
@@ -30,7 +15,7 @@ const TodoTask = ({navigation, route}) => {
         data={tasks}
         renderItem={({ item, index }) => (
           <View style={styles.taskContainer}>
-            <Text style={styles.task}>{item}</Text>
+            <Text style={styles.task}>{item.count + ' ' + item.unit + ' ' + item.text}</Text>
             <TouchableOpacity style={styles.button} onPress={() => removeTask(index)}>
                 <Text style={styles.removeButtonText}>Loai</Text>
             </TouchableOpacity>

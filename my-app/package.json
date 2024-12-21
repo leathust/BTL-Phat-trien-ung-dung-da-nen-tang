@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@expo/metro-runtime": "~4.0.0",
+    "@react-native-picker/picker": "^2.10.2",
     "@react-navigation/drawer": "^7.1.1",
     "@react-navigation/elements": "^2.2.5",
     "@react-navigation/material-top-tabs": "^7.1.0",

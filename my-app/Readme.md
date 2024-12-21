@@ -18,6 +18,7 @@ npm install react-native-tab-view
 npm install react-native-gesture-handler react-native-reanimated
 npm install react-native-vector-icons
 npm install @react-navigation/drawer
+npm install @react-native-picker/picker
 ```
 
 # 1. Start expo project to bundle the app
