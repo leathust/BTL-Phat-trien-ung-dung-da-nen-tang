@@ -41,7 +41,7 @@ const LoginScreen = ({ navigation }) => {
           style={styles.input}
           value={password}
           onChangeText={setPassword}
-          placeholder="Enter your password"
+          placeholder="Nhập mật khẩu"
           secureTextEntry={!passwordVisible}
         />
         <TouchableOpacity
