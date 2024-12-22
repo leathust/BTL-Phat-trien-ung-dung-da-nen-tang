@@ -9,18 +9,14 @@ import AddListForm from '../Components/AddNewListForm';
 
 const ListStack = createNativeStackNavigator();
 
-import { TaskProvider } from '../Context/TaskContext';
-
 const ShopListScreen = ({ navigation }) => {
     return (
-        <TaskProvider>
             <ListStack.Navigator initialRouteName='AllList'>
                 <ListStack.Screen name='AllList' component={AllList} options={{ headerShown: false }} />
                 <ListStack.Screen name='TodoTask' component={TodoTask} />
                 <ListStack.Screen name='AddItemForm' component={FormWithAlert} options={{ headerTitle: "Thêm đồ" }} />
                 <ListStack.Screen name='AddListForm' component={AddListForm} options={{ headerTitle: "Thêm danh sách mới" }} />
             </ListStack.Navigator>
-        </TaskProvider>
     );
 };
 

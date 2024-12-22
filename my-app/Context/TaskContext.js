@@ -1,22 +1,22 @@
 // TaskContext.js
 import React, { createContext, useState } from 'react';
-
 // Create the context
 const TaskContext = createContext();
 
 // Create a provider component
 const TaskProvider = ({ children }) => {
+
     const [tasks, setTasks] = useState([{id: 1, listId: 1, text: 'Rau ngót', count: 4, unit: 'bó', completed: false}, 
-                                        {id: 2, listId: 1, text: 'Trứng', count: 2, unit: 'quả', completed: false},
-                                        {id: 3, listId: 2, text: 'Thịt lợn', count: 5, unit: 'kg', completed: false},
-                                        {id: 4, listId: 2, text: 'Rượu nếp', count: 2, unit: 'chai', completed: false}
-                                        ]);
-    const [lists, setLists] = useState([{listId: 1, name: 'mua sắm Tết 2025'}, {listId: 2, name: 'Chuẩn bị thi CK'}]);
+                                                {id: 2, listId: 1, text: 'Trứng', count: 2, unit: 'quả', completed: false},
+                                                {id: 3, listId: 2, text: 'Thịt lợn', count: 5, unit: 'kg', completed: false},
+                                                {id: 4, listId: 2, text: 'Rượu nếp', count: 2, unit: 'chai', completed: false}
+                                                ]);
+    const [lists, setLists] = useState([{listId: 1, name: 'mua sắm Tết 2025', familyLits: false}, {listId: 2, name: 'Chuẩn bị thi CK', familyLits: false}]);
 
     // Function to add a task
     const addTask = (task) => {
         setTasks([...tasks, task]);
-        console.log(tasks);             // chú ý sẽ ko console.log ra task mới thêm vào nhất được, lý do là vì setTasks là async.
+        //console.log(tasks);             // chú ý sẽ ko console.log ra task mới thêm vào nhất được, lý do là vì setTasks là async.
     };
 
     // Function to add a list

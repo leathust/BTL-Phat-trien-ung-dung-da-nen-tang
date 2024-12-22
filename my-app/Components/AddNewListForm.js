@@ -13,7 +13,7 @@ const AddListForm = ({ navigation }) => {
             Alert.alert('Bạn cần nhập lại tên của danh sách');
         }
         else {
-            const newList = {listId: Math.random().toString(), name: listName};
+            const newList = {listId: Math.random().toString(), name: listName, familyList: false};
             addList(newList);
             setListName('');
             navigation.goBack();

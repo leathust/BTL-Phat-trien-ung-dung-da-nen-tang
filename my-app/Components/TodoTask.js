@@ -1,5 +1,5 @@
 import React, { useContext, useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity} from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { TaskContext } from '../Context/TaskContext';
 
@@ -24,17 +24,17 @@ const TodoTask = ({ navigation, route }) => {
       <FlatList
         data={tasks.filter(item => item.listId === listId)}
         renderItem={({ item, index }) => (
-          <View style={[styles.taskContainer, item.completed && styles.completedTaskContainer]}>
-            <TouchableOpacity onPress={() => toggleTaskCompletion(item.id)}>
+          <TouchableOpacity onPress={() => toggleTaskCompletion(item.id)}>
+            <View style={[styles.taskContainer, item.completed && styles.completedTaskContainer]}>
               <Text style={[styles.taskText, item.completed && styles.completedTask]}>
                 {item.count + ' ' + item.unit + ' ' + item.text}
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => removeTask(item.id)}>
-              {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
-              <Icon name="trash" size={35} color="purple" />
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity onPress={() => removeTask(item.id)}>
+                {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
+                <Icon name="trash" size={35} color="purple" />
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
         )}
         keyExtractor={(item, index) => index.toString()}
         style={styles.taskList}

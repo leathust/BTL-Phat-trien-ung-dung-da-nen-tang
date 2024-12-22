@@ -2,20 +2,23 @@ import React from 'react';
 import { StyleSheet } from 'react-native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 
+
+import { TaskProvider } from '../Context/TaskContext';
+
 import ShopListScreen from './Shop_ShopList';
 import FamilyScreen from './Shop_Family';
-import StatisticScreen from './Shop_Statistic';
 
 const Drawer = createDrawerNavigator();
 
 
 const ShopScreen = ({navigation}) => {
   return (
+    <TaskProvider>
         <Drawer.Navigator initialRouteName="Danh sách mua sắm">
           <Drawer.Screen name="Danh sách mua sắm" component={ShopListScreen}/>
           <Drawer.Screen name="Nhóm gia đình" component={FamilyScreen} />
-          <Drawer.Screen name="Thống kê chi tiêu" component={StatisticScreen} />
         </Drawer.Navigator>
+        </TaskProvider>
   );
 };
 
