@@ -7,14 +7,15 @@ const ShopContext = createContext();
 const ShopProvider = ({ children }) => {
 
     const [tasks, setTasks] = useState([{id: 1, listId: 1, text: 'Rau ngót', count: 4, unit: 'bó', completed: false}, 
-                                                {id: 2, listId: 1, text: 'Trứng', count: 2, unit: 'quả', completed: false},
-                                                {id: 3, listId: 2, text: 'Thịt lợn', count: 5, unit: 'kg', completed: false},
-                                                {id: 4, listId: 2, text: 'Rượu nếp', count: 2, unit: 'chai', completed: false}
-                                                ]);
-    const [lists, setLists] = useState([{listId: 1, name: 'mua sắm Tết 2025', familyLits: false}, {listId: 2, name: 'Chuẩn bị thi CK', familyLits: false}]);
+                                        {id: 2, listId: 1, text: 'Trứng', count: 2, unit: 'quả', completed: false},
+                                        {id: 3, listId: 2, text: 'Thịt lợn', count: 5, unit: 'kg', completed: false},
+                                        {id: 4, listId: 2, text: 'Rượu nếp', count: 2, unit: 'chai', completed: false}
+                                        ]);
+    const [lists, setLists] = useState([{listId: 1, name: 'mua sắm Tết 2025', userId: '0000', familyLits: false}, 
+                                        {listId: 2, name: 'Chuẩn bị thi CK', userId: '0000', familyLits: false}]);
     
-    const [groups, setGroups] = useState([{groupId: 1, name: 'Ăn Tết bên ngoại', bossId: '0000', userIDs: ['0001', '0002', '0003'], taskIDs: [1, 2]},
-                                        {groupId: 2, name: 'Nhóm 1', bossId: '0000', userIDs: ['0001', '0002', '0003'], taskIDs: [3, 4]}
+    const [groups, setGroups] = useState([{groupId: 1, name: 'Ăn Tết bên ngoại', bossId: '0000', userIDs: ['0000', '0002', '0003'], taskIDs: [1, 2]},
+                                        {groupId: 2, name: 'Nhóm 1', bossId: '0000', userIDs: ['0000', '0003', '0004'], taskIDs: [3, 4]}
                                         ]);                                 
     // Function to add a task
     const addTask = (task) => {
@@ -63,8 +64,19 @@ const ShopProvider = ({ children }) => {
         );
     };
 
+    // Function to add a user to a group
+    const addUserToGroup = (groupId, userId) => {
+        setGroups(
+            groups.map(group =>
+                group.groupId === groupId
+                    ? { ...group, userIDs: [...group.userIDs, userId] }
+                    : group
+            )
+        );
+    };
+
     return (
-        <ShopContext.Provider value={{ tasks, addTask, removeTask, toggleTaskCompletion, lists, addList, removeList, groups, addGroup, removeGroup }}>
+        <ShopContext.Provider value={{ tasks, addTask, removeTask, toggleTaskCompletion, lists, addList, removeList, groups, addGroup, removeGroup, addUserToGroup }}>
             {children}
         </ShopContext.Provider>
     );

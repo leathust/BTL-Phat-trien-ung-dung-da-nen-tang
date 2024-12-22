@@ -3,19 +3,18 @@ import { View, TextInput, StyleSheet, Alert, Button } from 'react-native';
 
 import { ShopContext } from "../Context/ShopContext";
 
-const AddListForm = ({ navigation }) => {
-    const { addList } = useContext(ShopContext);
-
-    const [ listName, setListName ] = useState('');
+const AddMemberForm = ({ navigation, route }) => {
+    const { addUserToGroup } = useContext(ShopContext);
+    const { groupId } = route.params;
+    const [ newUserId, setNewUserId ] = useState('');
 
     const handleSubmit = () => {
-        if (!listName.trim()) {
-            Alert.alert('Bạn cần nhập lại tên của danh sách');
+        if (!newUserId.trim()) {
+            Alert.alert('Có vẻ không tồn tại người dùng.\nBạn cần nhập lại số điện thoại');
         }
         else {
-            const newList = {listId: Math.random().toString(), name: listName, userId: '0000', familyList: false};
-            addList(newList);
-            setListName('');
+            addUserToGroup(groupId, newUserId);
+            setNewUserId('');
             navigation.goBack();
         }
     };
@@ -24,9 +23,10 @@ const AddListForm = ({ navigation }) => {
         <View style={styles.container}>
             <TextInput
             style={styles.input}
-            value={listName}
-            onChangeText={setListName}
-            placeholder="Nhập tên của danh sách" 
+            value={newUserId}
+            onChangeText={setNewUserId}
+            placeholder="Nhập số điện thoại người dùng" 
+            keyboardType='phone-pad'
             />
 
             <Button title="Submit" onPress={handleSubmit} />
@@ -65,4 +65,4 @@ const styles = StyleSheet.create({
     }
   });
 
-  export default AddListForm;
+  export default AddMemberForm;

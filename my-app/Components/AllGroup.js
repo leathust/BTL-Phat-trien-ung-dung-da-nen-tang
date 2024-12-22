@@ -1,30 +1,30 @@
-import React, {useState, useContext} from 'react';
+import React, { useContext } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 
 import { ShopContext } from '../Context/ShopContext';
 
 const AllGroup = ({ navigation }) => {
   // Constant list of groups and their items
-  const {groups} = useContext(ShopContext);
+  const { groups } = useContext(ShopContext);
 
   return (
-    <View style={{flex: 1}}>
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.row}>
-        {/* Render each group dynamically using map */}
-        {groups.map((group) => (
-          <View key={group.groupId} style={styles.group}>
-            <Text style={styles.groupText}>{group.name}</Text>
-          </View>
-        ))}
-      </View>
-    </ScrollView>
-    <TouchableOpacity
-              style={styles.fab}
-              onPress={() => navigation.navigate('AddGroupForm')}
-            >
-              <Text style={{color: 'white', fontSize: 24}}>+</Text>
+    <View style={{ flex: 1 }}>
+      <ScrollView contentContainerStyle={styles.container}>
+        <View style={styles.row}>
+          {/* Render each group dynamically using map */}
+          {groups.map((group, index) => (
+            <TouchableOpacity key={index} style={styles.group} onPress={() => navigation.navigate('GroupDetail', { groupId: group.groupId, groupName: group.name, bossId: group.bossId })}>
+              <Text style={styles.groupText}>{group.name}</Text>
             </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => navigation.navigate('AddGroupForm')}
+      >
+        <Text style={{ color: 'white', fontSize: 24 }}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };

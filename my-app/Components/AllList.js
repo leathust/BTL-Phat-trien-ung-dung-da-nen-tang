@@ -4,7 +4,7 @@ import { ShopContext } from '../Context/ShopContext';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const AllList = ({ navigation }) => {
-    const { lists, addList, removeList } = useContext(ShopContext);
+    const { lists, removeList } = useContext(ShopContext);
 
     return (
         // <TouchableOpacity onPress={() => navigation.navigate('TodoTask')}>
@@ -12,9 +12,9 @@ const AllList = ({ navigation }) => {
         // </TouchableOpacity>
         <View style={styles.container}>
             <FlatList
-                data={lists}
+                data={lists.slice(0).reverse()}
                 renderItem={({ item, index }) => (
-                    <TouchableOpacity onPress={() => navigation.navigate('TodoTask', { listName: item.name, listId: item.listId })}>
+                    <TouchableOpacity onPress={() => navigation.navigate('TodoTask', { listName: item.name, listId: item.listId, famList: item.familyList })}>
                         <View style={styles.taskContainer}>
                             <Text style={styles.task}>{item.name}</Text>
                             <TouchableOpacity onPress={() => removeList(item.listId)}>

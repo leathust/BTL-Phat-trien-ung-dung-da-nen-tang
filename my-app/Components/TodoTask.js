@@ -5,7 +5,7 @@ import { ShopContext } from '../Context/ShopContext';
 
 const TodoTask = ({ navigation, route }) => {
   const { tasks, addTask, removeTask, toggleTaskCompletion } = useContext(ShopContext);
-  const { listName, listId } = route.params;
+  const { listName, listId, famList } = route.params;
 
   //console.log(listId);
   // Automatically set the title when the screen is navigated to
