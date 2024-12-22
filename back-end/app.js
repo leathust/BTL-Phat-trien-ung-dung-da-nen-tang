@@ -1,7 +1,7 @@
 import express from "express";
 import morgan from "morgan";
-import tourRouter from "./routes/tourRoutes.js";
 import userRouter from "./routes/userRoutes.js";
+import listRouter from "./routes/listRoutes.js";
 import { fileURLToPath } from "url";
 import { dirname } from "path";
 
@@ -16,14 +16,8 @@ if(process.env.NODE_ENV = "development") {
 }
 app.use(express.json());
 app.use(express.static(`${__dirname}/public`));
-// app.use((req, res, next) => {
-//     console.log("Hello, your request will be pass over here - fun middlware!");
-//     req.requestTime = new Date().toISOString();
-//     next();
-// })
 
-//Routes but it also as middleware
-app.use('/api/v1/tours', tourRouter);
-app.use('/api/v1/users', userRouter);
+app.use('/api/v1/user', userRouter);
+app.use('/api/v1/list', listRouter);
 
 export default app;
