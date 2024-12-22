@@ -12,7 +12,10 @@ const ShopProvider = ({ children }) => {
                                                 {id: 4, listId: 2, text: 'Rượu nếp', count: 2, unit: 'chai', completed: false}
                                                 ]);
     const [lists, setLists] = useState([{listId: 1, name: 'mua sắm Tết 2025', familyLits: false}, {listId: 2, name: 'Chuẩn bị thi CK', familyLits: false}]);
-
+    
+    const [groups, setGroups] = useState([{groupId: 1, name: 'Ăn Tết bên ngoại', bossId: '0000', userIDs: ['0001', '0002', '0003'], taskIDs: [1, 2]},
+                                        {groupId: 2, name: 'Nhóm 1', bossId: '0000', userIDs: ['0001', '0002', '0003'], taskIDs: [3, 4]}
+                                        ]);                                 
     // Function to add a task
     const addTask = (task) => {
         setTasks([...tasks, task]);
@@ -22,6 +25,11 @@ const ShopProvider = ({ children }) => {
     // Function to add a list
     const addList = (list) => {
         setLists([...lists, list]);
+    };
+
+    // Function to add a group
+    const addGroup = (group) => {
+        setGroups([...groups, group]);
     };
 
     // Function to remove a task
@@ -38,6 +46,12 @@ const ShopProvider = ({ children }) => {
         setLists(newLists);
     }
 
+    // Function to remove a group
+    const removeGroup = (id) => {
+        const newGroups = groups.filter(item => item.groupId !== id);
+        setGroups(newGroups);
+    };
+
     // Function to toggle task completion
     const toggleTaskCompletion = (taskId) => {
         setTasks(
@@ -50,7 +64,7 @@ const ShopProvider = ({ children }) => {
     };
 
     return (
-        <ShopContext.Provider value={{ tasks, addTask, removeTask, toggleTaskCompletion, lists, addList, removeList }}>
+        <ShopContext.Provider value={{ tasks, addTask, removeTask, toggleTaskCompletion, lists, addList, removeList, groups, addGroup, removeGroup }}>
             {children}
         </ShopContext.Provider>
     );
