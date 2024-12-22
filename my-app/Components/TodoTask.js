@@ -1,10 +1,10 @@
 import React, { useContext, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { TaskContext } from '../Context/TaskContext';
+import { ShopContext } from '../Context/ShopContext';
 
 const TodoTask = ({ navigation, route }) => {
-  const { tasks, addTask, removeTask, toggleTaskCompletion } = useContext(TaskContext);
+  const { tasks, addTask, removeTask, toggleTaskCompletion } = useContext(ShopContext);
   const { listName, listId } = route.params;
 
   //console.log(listId);

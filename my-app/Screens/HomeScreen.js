@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
-import { NavigationContainer, NavigationIndependentTree } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Icon from 'react-native-vector-icons/Ionicons';
 

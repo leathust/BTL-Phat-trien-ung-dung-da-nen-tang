@@ -1,10 +1,10 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { TaskContext } from '../Context/TaskContext';
+import { ShopContext } from '../Context/ShopContext';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const AllList = ({ navigation }) => {
-    const { lists, addList, removeList } = useContext(TaskContext);
+    const { lists, addList, removeList } = useContext(ShopContext);
 
     return (
         // <TouchableOpacity onPress={() => navigation.navigate('TodoTask')}>

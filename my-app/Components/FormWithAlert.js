@@ -2,10 +2,10 @@ import React, { useState, useContext } from 'react';
 import { View, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-import { TaskContext } from '../Context/TaskContext';
+import { ShopContext } from '../Context/ShopContext';
 
 const FormWithAlert = ({ navigation, route }) => {
-  const { addTask } = useContext(TaskContext);
+  const { addTask } = useContext(ShopContext);
   const { listId } = route.params;
 
   const [itemName, setItemName] = useState('');

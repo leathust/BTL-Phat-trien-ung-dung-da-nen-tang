@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text, TouchableOpacity } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 import TodoTask from '../Components/TodoTask';

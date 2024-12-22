@@ -1,10 +1,10 @@
 // TaskContext.js
 import React, { createContext, useState } from 'react';
 // Create the context
-const TaskContext = createContext();
+const ShopContext = createContext();
 
 // Create a provider component
-const TaskProvider = ({ children }) => {
+const ShopProvider = ({ children }) => {
 
     const [tasks, setTasks] = useState([{id: 1, listId: 1, text: 'Rau ngót', count: 4, unit: 'bó', completed: false}, 
                                                 {id: 2, listId: 1, text: 'Trứng', count: 2, unit: 'quả', completed: false},
@@ -50,10 +50,10 @@ const TaskProvider = ({ children }) => {
     };
 
     return (
-        <TaskContext.Provider value={{ tasks, addTask, removeTask, toggleTaskCompletion, lists, addList, removeList }}>
+        <ShopContext.Provider value={{ tasks, addTask, removeTask, toggleTaskCompletion, lists, addList, removeList }}>
             {children}
-        </TaskContext.Provider>
+        </ShopContext.Provider>
     );
 };
 
-export { TaskProvider, TaskContext };
+export { ShopProvider, ShopContext };

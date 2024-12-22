@@ -6,7 +6,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import LoginScreen from './Screens/LoginScreen';
 import HomeScreen from './Screens/HomeScreen';
 import SettingScreen from './Screens/SettingScreen';
-import { GlobalProvider } from './Context/GlobalContext';
 
 const Stack = createNativeStackNavigator();
 

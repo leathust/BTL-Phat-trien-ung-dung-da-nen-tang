@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import { View, TextInput, StyleSheet, Alert, Button } from 'react-native';
 
-import { TaskContext } from "../Context/TaskContext";
+import { ShopContext } from "../Context/ShopContext";
 
 const AddListForm = ({ navigation }) => {
-    const { addList } = useContext(TaskContext);
+    const { addList } = useContext(ShopContext);
 
     const [ listName, setListName ] = useState('');
 
