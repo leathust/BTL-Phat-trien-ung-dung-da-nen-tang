@@ -33,7 +33,7 @@ export const createDish = async (req, res) => {
 
 export const updateDish = async (req, res) => {
     try {
-      const { recipeID, userID, instruction, ingredients } = req.body;
+      const { recipeID, userID, instruction, ingredients, dishName } = req.body;
   
       // Validate input
       if (!recipeID || !userID || !instruction || !Array.isArray(ingredients)) {
@@ -47,6 +47,9 @@ export const updateDish = async (req, res) => {
       }
   
       // Update fields
+      if (dishName) {
+        existingDish.dishName = dishName;
+      }
       existingDish.instruction = instruction;
       existingDish.ingredient = ingredients
         .map(item => `${item.itemID}: ${item.amount}`)
