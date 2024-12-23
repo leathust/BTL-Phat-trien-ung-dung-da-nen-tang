@@ -13,7 +13,7 @@ const AddGroupForm = ({ navigation }) => {
             Alert.alert('Bạn cần nhập lại tên của nhóm');
         }
         else {
-            const newGroup = {groupId: Math.random().toString(), name: groupName, bossID: '0000', userIDs: [], taskIDs: []};
+            const newGroup = {groupId: Math.random().toString(), name: groupName, bossID: '0000', userIDs: ['0000'], taskIDs: []};
             addGroup(newGroup);
             setGroupName('');
             navigation.goBack();

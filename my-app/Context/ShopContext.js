@@ -31,6 +31,7 @@ const ShopProvider = ({ children }) => {
     // Function to add a group
     const addGroup = (group) => {
         setGroups([...groups, group]);
+        console.log(groups);
     };
 
     // Function to remove a task
