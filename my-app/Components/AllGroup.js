@@ -13,7 +13,7 @@ const AllGroup = ({ navigation }) => {
         <View style={styles.row}>
           {/* Render each group dynamically using map */}
           {groups.map((group, index) => (
-            <TouchableOpacity key={index} style={styles.group} onPress={() => { navigation.navigate('GroupDetail', { groupId: group.groupId, groupName: group.name, bossId: group.bossID }); }}>
+            <TouchableOpacity key={index} style={styles.group} onPress={() => { navigation.navigate('GroupDetail', { groupId: group.groupId, groupName: group.name, bossId: group.bossId }); console.log(group) }}>
               <Text style={styles.groupText}>{group.name}</Text>
             </TouchableOpacity>
           ))}
