@@ -11,7 +11,7 @@ const FormWithAlert = ({ navigation, route }) => {
   const [itemName, setItemName] = useState('');
   const [count, setCount] = useState(0);
   const [unit, setUnit] = useState(''); // Optional field, initialized with an empty string
-  const availableUnits = ['kg', 'gam', 'bó', 'mớ', 'khúc', 'củ', 'quả', 'con', 'chai', 'lit', 'a', 'b', 'c', 'd', 'e', 'f']; // List of allowed units
+  const availableUnits = ['kg', 'gam', 'bó', 'mớ', 'khúc', 'củ', 'quả', 'con', 'chai', 'lit', 'cái', 'chiếc', 'c', 'd', 'e', 'f']; // List of allowed units
 
   const handleSubmit = () => {
     if (itemName === '' || count === '' || unit === '') {

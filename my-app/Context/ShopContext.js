@@ -11,8 +11,8 @@ const ShopProvider = ({ children }) => {
                                         { id: '3', listId: '2', text: 'Thịt lợn', count: 5, unit: 'kg', completed: false },
                                         { id: '4', listId: '2', text: 'Rượu nếp', count: 2, unit: 'chai', completed: false }
                                     ]);
-    const [lists, setLists] = useState([{ listId: '1', name: 'mua sắm Tết 2025', userId: '0000', familyLits: false },
-                                        { listId: '2', name: 'Chuẩn bị thi CK', userId: '0000', familyLits: false }]);
+    const [lists, setLists] = useState([{ listId: '1', name: 'mua sắm Tết 2025', userId: '0000', familyList: false },
+                                        { listId: '2', name: 'Chuẩn bị thi CK', userId: '0000', familyList: false }]);
 
     /*idea: with familyList, listId = groupId */
 

@@ -1,10 +1,20 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import { ShopContext } from '../Context/ShopContext';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const AllList = ({ navigation }) => {
     const { lists, removeList } = useContext(ShopContext);
+
+    const trashButtonHandler = (listId, listBossId) => {
+        if (listBossId === '0000') {
+            removeList(listId);
+        }
+        else {
+            Alert.alert('Bạn không thể xóa danh sách được phân công cho bạn', 
+                'Xin hay liên hệ với trưởng nhóm để xóa danh sách này');
+        }
+    };
 
     return (
         // <TouchableOpacity onPress={() => navigation.navigate('TodoTask')}>
@@ -14,13 +24,14 @@ const AllList = ({ navigation }) => {
             <FlatList
                 data={lists.slice(0).reverse()}
                 renderItem={({ item, index }) => (
-                    <TouchableOpacity onPress={() => navigation.navigate('TodoTask', { listName: item.name, listId: item.listId, famList: item.familyList })}>
-                        <View style={styles.taskContainer}>
+                    <TouchableOpacity onPress={() => navigation.navigate('TodoTask', { listName: item.name, listId: item.listId, familyList: item.familyList })}>
+                        <View style={item.familyList ? styles.group : styles.taskContainer}>
+                            {console.log(item)}
                             <Text style={styles.task}>{item.name}</Text>
-                            <TouchableOpacity onPress={() => removeList(item.listId)}>
-                                            {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
-                                            <Icon name="trash" size={35} color="purple" />
-                                        </TouchableOpacity>
+                            <TouchableOpacity onPress={() => { item.familyList ? trashButtonHandler(item.listId, '0001') : removeList(item.listId) }}>
+                                {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
+                                <Icon name="trash" size={35} color="purple" />
+                            </TouchableOpacity>
                         </View>
                     </TouchableOpacity>
                 )}
@@ -71,6 +82,17 @@ const styles = StyleSheet.create({
         marginVertical: 5,
         borderRadius: 5,
         borderColor: 'salmon',
+        borderWidth: 2,
+    },
+    group: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: 'lemonchiffon',
+        marginVertical: 5,
+        borderRadius: 5,
+        borderColor: 'limegreen',
         borderWidth: 2,
     },
     task: {

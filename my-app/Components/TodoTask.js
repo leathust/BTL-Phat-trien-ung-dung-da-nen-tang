@@ -1,11 +1,11 @@
 import React, { useContext, useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { ShopContext } from '../Context/ShopContext';
 
 const TodoTask = ({ navigation, route }) => {
-  const { tasks, addTask, removeTask, toggleTaskCompletion } = useContext(ShopContext);
-  const { listName, listId, famList } = route.params;
+  const { tasks, removeTask, toggleTaskCompletion } = useContext(ShopContext);
+  const { listName, listId, familyList } = route.params;
 
   //console.log(listId);
   // Automatically set the title when the screen is navigated to
@@ -19,6 +19,16 @@ const TodoTask = ({ navigation, route }) => {
     navigation.navigate('AddItemForm', { listId });
   };
 
+   const trashButtonHandler = (taskId) => {
+          if (!familyList) {
+              removeTask(taskId);
+          }
+          else {
+              Alert.alert('Bạn không thể xóa công việc nhóm', 
+                  'Xin hay liên hệ với trưởng nhóm để thay đổi điều này');
+          }
+      };
+
   return (
     <View style={styles.container}>
       <FlatList
@@ -29,7 +39,7 @@ const TodoTask = ({ navigation, route }) => {
               <Text style={[styles.taskText, item.completed && styles.completedTask]}>
                 {item.count + ' ' + item.unit + ' ' + item.text}
               </Text>
-              <TouchableOpacity onPress={() => removeTask(item.id)}>
+              <TouchableOpacity onPress={() => trashButtonHandler(item.id)}>
                 {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
                 <Icon name="trash" size={35} color="purple" />
               </TouchableOpacity>
