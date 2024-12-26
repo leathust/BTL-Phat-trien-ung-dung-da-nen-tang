@@ -6,6 +6,7 @@ import AllGroup from '../Components/AllGroup';
 import GroupDetail from '../Components/GroupDetail';
 import MemberList from '../Components/MemberList';
 import AddMemberForm from '../Components/AddMemberForm';
+import AddTaskToGroup from '../Components/AddTaskToGroupForm';
 
 const GroupStack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ const FamilyScreen = ({ navigation }) => {
                 <GroupStack.Screen name='GroupDetail' component={GroupDetail} />
                 <GroupStack.Screen name='MemberList' component={MemberList} options={{ headerTitle: "Thông tin thành viên"}} />
                 <GroupStack.Screen name='AddMemberForm' component={AddMemberForm} options={{ headerTitle: "Thêm thành viên"}} />
+                <GroupStack.Screen name='AddTaskToGroup' component={AddTaskToGroup} options={{ headerTitle: "Thêm nhiệm vụ trong nhóm" }} />
             </GroupStack.Navigator>
     );
 };

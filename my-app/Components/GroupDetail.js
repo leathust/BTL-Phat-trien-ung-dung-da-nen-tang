@@ -2,7 +2,7 @@ import React, { useState, useLayoutEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
 import { ShopContext } from '../Context/ShopContext';
 
-const GroupDetail = ({navigation, route}) => {
+const GroupDetail = ({ navigation, route }) => {
   // Sample data for the FlatList
   const [data, setData] = useState([
     { id: '1', name: 'Item 1' },
@@ -17,10 +17,10 @@ const GroupDetail = ({navigation, route}) => {
   const { removeGroup } = useContext(ShopContext);
 
   useLayoutEffect(() => {
-      navigation.setOptions({
-        title: groupName, // Dynamically set the title here
-      });
-    }, [groupName]);
+    navigation.setOptions({
+      title: groupName, // Dynamically set the title here
+    });
+  }, [groupName]);
 
   // Button press handlers
   const handleButton1Press = () => {
@@ -41,7 +41,7 @@ const GroupDetail = ({navigation, route}) => {
       {/* Row with two buttons */}
       <View style={styles.buttonRow}>
         <TouchableOpacity style={styles.memberButton} onPress={handleButton1Press}>
-          <Text style={{fontSize: 16, color: 'darkcoral'}}>Xem thành viên</Text>
+          <Text style={{ fontSize: 16, color: 'darkcoral' }}>Xem thành viên</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.CancelButton} onPress={handleButton2Press}>
@@ -59,6 +59,13 @@ const GroupDetail = ({navigation, route}) => {
         )}
         keyExtractor={(item) => item.id}
       />
+
+      <TouchableOpacity
+        style={styles.fab}
+        onPress={() => navigation.navigate('AddTaskToGroup', { groupId: groupId })}
+      >
+        <Text style={{ color: 'white', fontSize: 24 }}>+</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -105,6 +112,17 @@ const styles = StyleSheet.create({
   },
   itemText: {
     fontSize: 18,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 16,
+    right: 16,
+    backgroundColor: 'lightcoral',
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
