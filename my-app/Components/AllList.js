@@ -8,7 +8,8 @@ const AllList = ({ navigation }) => {
 
     const trashButtonHandler = (listId, listBossId) => {
         if (listBossId === '0000') {
-            removeList(listId);
+            Alert.alert('Bạn là trưởng nhóm này', 
+                'Mặc dù bạn là trưởng nhóm này, tuy nhiên xin hãy xóa nhiệm vụ này trong trang Nhóm gia đình.');
         }
         else {
             Alert.alert('Bạn không thể xóa danh sách được phân công cho bạn', 
@@ -28,7 +29,7 @@ const AllList = ({ navigation }) => {
                         <View style={item.familyList ? styles.group : styles.taskContainer}>
                             {console.log(item)}
                             <Text style={styles.task}>{item.name}</Text>
-                            <TouchableOpacity onPress={() => { item.familyList ? trashButtonHandler(item.listId, '0001') : removeList(item.listId) }}>
+                            <TouchableOpacity onPress={() => { item.familyList ? trashButtonHandler(item.listId, '0000') : removeList(item.listId) }}>
                                 {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
                                 <Icon name="trash" size={35} color="purple" />
                             </TouchableOpacity>

@@ -1,5 +1,5 @@
 import React, { useState, useLayoutEffect, useContext } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert } from 'react-native';
 import { ShopContext } from '../Context/ShopContext';
 
 const GroupDetail = ({ navigation, route }) => {
@@ -29,10 +29,21 @@ const GroupDetail = ({ navigation, route }) => {
 
   const handleButton2Press = () => {
     if (bossId === '0000') {
-      removeGroup(groupId);
-      navigation.goBack();
+      Alert.alert('Bạn là người quản lý nhóm', 'Khi bạn rời bỏ nhóm, tất cả phân công sẽ bị xóa.\nXin hãy xác nhận lại việc rời bỏ nhóm.',
+        [
+        {
+          text: 'Hủy', // Button label
+          onPress: () => null, // Handler for cancel button
+          style: 'cancel', // Optional: styling for the cancel button
+        },
+        {
+          text: 'Rời bỏ', // Button label
+          onPress: () => {removeGroup(groupId);
+            navigation.goBack();}, // Handler for OK button
+        },
+      ]);
     } else {
-      alert('Xin hãy liên hệ với người quản lý nhóm để rời khỏi nhóm này');
+      Alert.alert('Bạn là thành viên được thêm vào', 'Xin hãy liên hệ với người quản lý nhóm để rời khỏi nhóm này');
     }
   };
 
