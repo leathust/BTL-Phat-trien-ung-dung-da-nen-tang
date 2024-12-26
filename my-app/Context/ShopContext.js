@@ -56,7 +56,14 @@ const ShopProvider = ({ children }) => {
 
     // Function to remove a group
     const removeGroup = (id) => {
-        const newGroups = groups.filter(item => item.groupId !== id);
+        const groupToRemove = groups.find(group => group.groupId === id);
+        if (groupToRemove) {
+            const newTasks = tasks.filter(task => !groupToRemove.taskIDs.includes(task.id));
+            setTasks(newTasks);
+            const newLists = lists.filter(list => list.listId !== id);
+            setLists(newLists);
+        }
+        const newGroups = groups.filter(group => group.groupId !== id);
         setGroups(newGroups);
     };
 
