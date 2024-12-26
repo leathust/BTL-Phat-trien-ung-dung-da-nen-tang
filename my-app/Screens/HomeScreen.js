@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, Button, StyleSheet, Image } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 import FoodScreen from './FoodScreen';
 import MealScreen from './MealScreen';
@@ -10,17 +9,6 @@ import ShopScreen from './ShopScreen';
 const Tab = createMaterialTopTabNavigator();
 
 let username = 'Nhóm 18';
-
-function UserStatusBar() {
-  return (
-    <View style={styles.headerContainer}>
-      <Icon name="person-circle" size={40} color="green" />
-      <View style={styles.userInfo}>
-        <Text style={styles.userName}> Đi chợ cùng {username}! </Text>
-      </View>
-    </View>
-  );
-}
 
 const HomeScreen = ({navigation}) => {
   return (
