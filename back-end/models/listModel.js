@@ -1,20 +1,14 @@
 import mongoose from "mongoose";
-import { v4 as uuidv4 } from "uuid";
 
 // Định nghĩa Schema
 const listSchema = new mongoose.Schema({
-  listId: {
-    type: String,
-    default: uuidv4,
-    unique: true,
-  },
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: [true, "UserId is required"],
     ref: "User",
   },
   itemId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     required: [true, "ItemId is required"],
     ref: "Item",
   },
@@ -28,11 +22,7 @@ const listSchema = new mongoose.Schema({
     required: false,
     trim: true,
   },
-  createAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+}, { timestamps: true });
 
 
 // Export model

@@ -1,87 +1,91 @@
 import Dish from '../models/dishModel.js';
 
+// Tạo món ăn mới
 export const createDish = async (req, res) => {
-    try {
-      const { recipeID, userID, instruction, ingredients } = req.body;
-  
-      // Validate input
-      if (!recipeID || !userID || !instruction || !Array.isArray(ingredients)) {
-        return res.status(400).json({ error: 'Invalid input data' });
-      }
-  
-      // Construct ingredient string from the array
-      const ingredientString = ingredients
-        .map(item => `${item.itemID}: ${item.amount}`)
-        .join(', ');
-  
-      // Create new dish entry
-      const newDish = new Dish({
-        dishId: recipeID,
-        dishName: `Recipe_${recipeID}`,
-        ingredient: ingredientString,
-        instruction: instruction,
-      });
-  
-      await newDish.save();
-  
-      res.status(200).json({ message: 'Recipe created successfully!' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
+  try {
+    // Lấy thông tin từ body request
+    const { userId, dishName, ingredient, instruction, image } = req.body;
+
+    // Tạo một món ăn mới
+    const newDish = new Dish({
+      userId,
+      dishName,
+      ingredient,  // ingredient là mảng các ObjectId tham chiếu đến Item
+      instruction,
+      image
+    });
+
+    // Lưu món ăn vào cơ sở dữ liệu
+    const dish = await newDish.save();
+
+    res.status(201).json(dish);
+  } catch (err) {
+    res.status(500).json({ message: 'Error creating dish', error: err });
+  }
 };
 
+// Lấy tất cả các món ăn
+export const getAllDishes = async (req, res) => {
+  try {
+    const dishes = await Dish.find()
+      .populate('ingredient')  // Populating để lấy thông tin Item từ ObjectId
+      .exec();
+
+    res.status(200).json(dishes);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching dishes', error: err });
+  }
+};
+
+// Lấy món ăn theo ID
+export const getDishById = async (req, res) => {
+  try {
+    const dish = await Dish.findById(req.params.id)
+      .populate('ingredient')  // Populating để lấy thông tin Item từ ObjectId
+      .exec();
+
+    if (!dish) {
+      return res.status(404).json({ message: 'Dish not found' });
+    }
+
+    res.status(200).json(dish);
+  } catch (err) {
+    res.status(500).json({ message: 'Error fetching dish', error: err });
+  }
+};
+
+// Cập nhật món ăn
 export const updateDish = async (req, res) => {
-    try {
-      const { recipeID, userID, instruction, ingredients, dishName } = req.body;
-  
-      // Validate input
-      if (!recipeID || !userID || !instruction || !Array.isArray(ingredients)) {
-        return res.status(400).json({ error: 'Invalid input data' });
-      }
-  
-      // Find the existing dish
-      const existingDish = await Dish.findOne({ dishId: recipeID });
-      if (!existingDish) {
-        return res.status(404).json({ error: 'Recipe not found' });
-      }
-  
-      // Update fields
-      if (dishName) {
-        existingDish.dishName = dishName;
-      }
-      existingDish.instruction = instruction;
-      existingDish.ingredient = ingredients
-        .map(item => `${item.itemID}: ${item.amount}`)
-        .join(', ');
-  
-      await existingDish.save();
-  
-      res.status(200).json({ message: 'Recipe updated successfully!' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
+  try {
+    const updatedDish = await Dish.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }  // Trả về món ăn đã được cập nhật
+    )
+      .populate('ingredient')  // Populating để lấy thông tin Item từ ObjectId
+      .exec();
+
+    if (!updatedDish) {
+      return res.status(404).json({ message: 'Dish not found' });
     }
+
+    res.status(200).json(updatedDish);
+  } catch (err) {
+    res.status(500).json({ message: 'Error updating dish', error: err });
+  }
 };
 
+// Xóa món ăn
 export const deleteDish = async (req, res) => {
-    try {
-      const { recipeID, userID } = req.body;
-  
-      // Validate input
-      if (!recipeID || !userID) {
-        return res.status(400).json({ error: 'Invalid input data' });
-      }
-  
-      // Find and delete the dish
-      const deletedDish = await Dish.findOneAndDelete({ dishId: recipeID });
-      if (!deletedDish) {
-        return res.status(404).json({ error: 'Recipe not found' });
-      }
-  
-      res.status(200).json({ message: 'Recipe deleted successfully!' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
+  try {
+    const deletedDish = await Dish.findByIdAndDelete(req.params.id);
+
+    if (!deletedDish) {
+      return res.status(404).json({ message: 'Dish not found' });
     }
+
+    res.status(200).json({ message: 'Dish deleted successfully' });
+  } catch (err) {
+    res.status(500).json({ message: 'Error deleting dish', error: err });
+  }
 };

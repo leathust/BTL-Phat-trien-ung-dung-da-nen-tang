@@ -1,13 +1,7 @@
 import mongoose from "mongoose";
-import { v4 as uuidv4 } from "uuid";
 
 // Định nghĩa Schema
 const itemSchema = new mongoose.Schema({
-  itemId: {
-    type: String,
-    default: uuidv4,
-    unique: true,
-  },
   itemName: {
     type: String,
     required: [true, "Name is required"],
@@ -26,11 +20,7 @@ const itemSchema = new mongoose.Schema({
     trim: true,
     default: "default-icon.png", // Đặt giá trị mặc định nếu không có icon
   },
-  createAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+}, { timestamps: true });
 
 // Export model
 const Item = mongoose.model("Item", itemSchema);

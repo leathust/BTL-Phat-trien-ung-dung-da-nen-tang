@@ -1,15 +1,9 @@
 import mongoose from "mongoose";
 import validator from "validator";
 import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
 
 // Định nghĩa Schema
 const userSchema = new mongoose.Schema({
-    userId: {
-      type: String,
-      default: uuidv4,
-      unique: true,
-    },
     userName: {
       type: String,
       required: [true, "The name is required"],
@@ -64,10 +58,6 @@ const userSchema = new mongoose.Schema({
       type: String,
       default: "default-image.png",
     },
-    createAt: {
-      type: Date,
-      default: Date.now(),
-    },
     isVerified: {
       type: Boolean,
       default: false,
@@ -76,7 +66,7 @@ const userSchema = new mongoose.Schema({
       type: [String],
       default: [],
     },
-});
+}, { timestamps: true });
 
 //KHÔNG lưu passwordConfirm vào cơ sở dữ liệu
 userSchema.pre("save", function (next) {

@@ -9,8 +9,8 @@ groupRouter.route('/group').delete(authenticateToken, groupControllers.deleteGro
 groupRouter.route('/group/info').get(authenticateToken, groupControllers.getGroupInfo);
 groupRouter.route('/group/invite').post(authenticateToken, groupControllers.sendInvitation);
 groupRouter.route('/group/accept').post(authenticateToken, groupControllers.acceptInvitation);
-groupRouter.route('group/remove').delete(authenticateToken, groupControllers.removeMember);
-groupRouter.route('group/leave').post(authenticateToken, groupControllers.leaveGroup);
-groupRouter.route('group/share').post(authenticateToken, groupControllers.shareListWithGroup);
+groupRouter.route('/group/remove').delete(authenticateToken, groupControllers.removeMember);
+groupRouter.route('/group/leave').post(authenticateToken, groupControllers.leaveGroup);
+groupRouter.route('/group/share').post(authenticateToken, groupControllers.shareListWithGroup);
 
 export default groupRouter;

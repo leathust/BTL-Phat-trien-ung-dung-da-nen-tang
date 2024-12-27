@@ -1,13 +1,7 @@
 import mongoose from "mongoose";
-import { v4 as uuidv4 } from "uuid";
 
 // Định nghĩa Schema
 const groupSchema = new mongoose.Schema({
-  groupId: {
-    type: String,
-    default: uuidv4,
-    unique: true,
-  },
   groupName: {
     type: String,
     required: [true, "Group name is required"],
@@ -42,11 +36,7 @@ const groupSchema = new mongoose.Schema({
     default: [],
     ref: "List",
   },
-  createAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+}, { timestamps: true });
 
 // Export model
 const Group = mongoose.model("Group", groupSchema);

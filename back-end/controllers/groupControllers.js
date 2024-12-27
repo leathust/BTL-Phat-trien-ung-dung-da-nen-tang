@@ -207,8 +207,6 @@ export const removeMember = async (req, res) => {
   }
 };
 
-import Group from "../models/groupModel.js";
-
 // A MEMBER LEAVES A GROUP
 export const leaveGroup = async (req, res) => {
   try {
