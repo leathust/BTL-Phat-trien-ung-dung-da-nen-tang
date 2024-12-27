@@ -2,6 +2,11 @@ import mongoose from "mongoose";
 
 // Định nghĩa Schema
 const itemSchema = new mongoose.Schema({
+  userId : {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User", // Đảm bảo có model 'User' để tham chiếu
+  },
   itemName: {
     type: String,
     required: [true, "Name is required"],

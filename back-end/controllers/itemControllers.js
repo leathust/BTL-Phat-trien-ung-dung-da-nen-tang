@@ -3,9 +3,10 @@ import Item from "../models/itemModel.js";
 // Tạo một item mới
 export const createItem = async (req, res) => {
   try {
-    const { itemName, itemDescription, itemIcon } = req.body;
+    const { userId, itemName, itemDescription, itemIcon } = req.body;
 
     const newItem = await Item.create({
+      userId,
       itemName,
       itemDescription,
       itemIcon,
@@ -27,11 +28,11 @@ export const createItem = async (req, res) => {
 export const updateItem = async (req, res) => {
   try {
     const { id } = req.params;
-    const { itemName, itemDescription, itemIcon } = req.body;
+    const { userId, itemName, itemDescription, itemIcon } = req.body;
 
     const updatedItem = await Item.findByIdAndUpdate(
       id,
-      { itemName, itemDescription, itemIcon },
+      { userId, itemName, itemDescription, itemIcon },
       { new: true, runValidators: true }
     );
 
@@ -74,10 +75,11 @@ export const deleteItem = async (req, res) => {
   }
 };
 
-// Lấy tất cả các item
+// Lấy tất cả các item của một userId
 export const getAllItems = async (req, res) => {
   try {
-    const items = await Item.find();
+    const { userId } = req.params;
+    const items = await Item.find({ userId });
 
     res.status(200).json({
       message: "Items retrieved successfully",

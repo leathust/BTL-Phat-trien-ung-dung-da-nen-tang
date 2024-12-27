@@ -75,10 +75,11 @@ export const deleteMeal = async (req, res) => {
   }
 };
 
-// Lấy tất cả các meal
+// Lấy tất cả các meal của một userId
 export const getAllMeals = async (req, res) => {
   try {
-    const meals = await Meal.find();
+    const { userId } = req.params;
+    const meals = await Meal.find({ userId });
 
     res.status(200).json({
       message: "Meals retrieved successfully",

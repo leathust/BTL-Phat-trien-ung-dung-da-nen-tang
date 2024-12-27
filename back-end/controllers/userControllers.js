@@ -74,18 +74,11 @@ export const userLogin = async (req, res) => {
     const accessToken = createAccessToken({ userId: user.userId, email: user.email });
     const refreshToken = createRefreshToken({ userId: user.userId });
 
-    // Trả về token dưới dạng HTTP-only cookie để bảo vệ refresh token
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // chỉ dùng trong HTTPS
-      sameSite: "Strict", // giúp tránh CSRF
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-    });
-
-    // Trả về Access Token trong response body
+    // Trả về Access Token và Refresh Token trong response body
     return res.status(200).json({
       message: "Login successful!",
       accessToken,
+      refreshToken,  // Trả về refresh token thay vì lưu trong cookie
     });
   } catch (error) {
     console.error("Error in userLogin:", error.message);
@@ -154,14 +147,14 @@ export const getVerificationCode =  async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail', // Bạn có thể thay bằng dịch vụ khác như Outlook, Yahoo
     auth: {
-      user: 'your email here', // Email của bạn
-      pass: 'your app password', // Mật khẩu ứng dụng
+      user: process.env.EMAIL || 'your email here', // Email của bạn
+      pass: process.env.EMAIL_APP_PASSWORD || 'your app password', // Mật khẩu ứng dụng
     },
   });
 
   // Cấu hình nội dung email
   const mailOptions = {
-    from: 'your email here',
+    from: process.env.EMAIL || 'your email here',
     to: email,
     subject: 'Verification Code',
     text: `Your verification code is: ${verificationCode}`,
