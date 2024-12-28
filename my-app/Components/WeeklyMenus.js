@@ -100,6 +100,12 @@ const WeeklyMenus = ({ navigation }) => {
                     return null;
                 }}
             />
+            <TouchableOpacity
+                style={styles.fab}
+                onPress={() => navigation.navigate('Thêm thực đơn')}
+            >
+                <Text style={styles.fabText}>+</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -147,6 +153,21 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#333',
     },
+    fab: {
+        position: 'absolute',
+        bottom: 16,
+        right: 16,
+        backgroundColor: 'lightcoral',
+        width: 56,
+        height: 56,
+        borderRadius: 28,
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      fabText: {
+        color: '#fff',
+        fontSize: 24,
+      },
 });
 
 function getCurrentWeekWithDates() {
