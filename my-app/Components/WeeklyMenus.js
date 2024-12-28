@@ -102,7 +102,15 @@ const WeeklyMenus = ({ navigation }) => {
             />
             <TouchableOpacity
                 style={styles.fab}
-                onPress={() => navigation.navigate('Thêm thực đơn')}
+                onPress={() => {
+                    let avaiMealTypes = [];
+                    for (let item of mealTypes) {
+                        if (currentMealPlan[item].length == 0)
+                            avaiMealTypes.push(item);
+                    }
+                    console.log(avaiMealTypes);
+                    navigation.navigate('Thêm thực đơn', {avaiMealTypes: avaiMealTypes});}
+                }
             >
                 <Text style={styles.fabText}>+</Text>
             </TouchableOpacity>
