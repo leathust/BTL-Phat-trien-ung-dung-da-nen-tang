@@ -4,15 +4,15 @@ import { Picker } from '@react-native-picker/picker';
 import { MealContext } from '../Context/MealContext';
 
 const AddNewMealForm = ({ navigation, route }) => {
-    const {avaiMealTypes} = route.params;
+    const {avaiMealTypes, date} = route.params;
     const [selectedMealType, setSelectedMealType] = useState('Chọn loại bữa ăn');
-    const [numberOfPeople, setNumberOfPeople] = useState('');
+    const [numberOfPeople, setNumberOfPeople] = useState(0);
 
     const { addMeal } = useContext(MealContext);
 
     const handleSubmit = () => {
         if (numberOfPeople && selectedMealType) {
-            const newMeal = {id: Math.random().toString(), type: selectedMealType, date: new Date().toISOString(), numOfPeople: parseInt(numberOfPeople), dishesIds: []};
+            const newMeal = {id: Math.random().toString(), type: selectedMealType, date: date, numOfPeople: numberOfPeople, dishesIds: ['']};
             addMeal(newMeal);
             setNumberOfPeople('');
             navigation.goBack();

@@ -109,7 +109,7 @@ const WeeklyMenus = ({ navigation }) => {
                             avaiMealTypes.push(item);
                     }
                     console.log(avaiMealTypes);
-                    navigation.navigate('Thêm thực đơn', {avaiMealTypes: avaiMealTypes});}
+                    navigation.navigate('Thêm thực đơn', {avaiMealTypes: avaiMealTypes, date: thisWeek.find(item => item[selectedDay])?.[selectedDay]});}
                 }
             >
                 <Text style={styles.fabText}>+</Text>
