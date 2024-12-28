@@ -115,8 +115,23 @@ export const sendInvitation = async (req, res) => {
       return res.status(400).json({ message: "User is already a member of the group." });
     }
 
-    // Xử lý logic gửi lời mời (ví dụ: lưu trạng thái lời mời hoặc gửi thông báo)
-    // Đối với ví dụ này, ta chỉ trả về thông báo thành công
+    // Lưu trạng thái lời mời vào cơ sở dữ liệu
+    const invitation = new Invitation({
+      groupID,
+      userID,
+      status: 'pending', // Trạng thái lời mời
+    });
+    await invitation.save();
+    
+    // Tạo thông báo
+    const notification = new Notification({
+      userID,
+      message: `You have been invited to join the group ${group.groupName}.`,
+      type: 'invitation',
+      data: { groupID, invitationID: invitation._id },
+    });
+    await notification.save();
+
     return res.status(200).json({
       message: `Invitation sent to user ${userID} for group ${groupID} successfully.`,
     });
@@ -145,6 +160,12 @@ export const acceptInvitation = async (req, res) => {
       return res.status(404).json({ message: "Group not found." });
     }
 
+    // Kiểm tra lời mời có tồn tại không
+    const invitation = await Invitation.findOne({ _id: invitationID, userId: userID, groupId: groupID });
+    if (!invitation) {
+      return res.status(404).json({ message: "Invitation not found." });
+    }
+
     // Kiểm tra nếu người dùng đã là thành viên
     if (group.groupMembers.includes(userID)) {
       return res.status(400).json({ message: "User is already a member of the group." });
@@ -153,6 +174,10 @@ export const acceptInvitation = async (req, res) => {
     // Thêm người dùng vào danh sách thành viên của nhóm
     group.groupMembers.push(userID);
     await group.save();
+
+    // Cập nhật trạng thái lời mời
+    invitation.status = 'accepted';
+    await invitation.save();
 
     return res.status(200).json({
       message: `User ${userID} has successfully joined group ${groupID}.`,
@@ -295,6 +320,54 @@ export const shareListWithGroup = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       message: "An error occurred while sharing the list with the group.",
+      error: error.message,
+    });
+  }
+};
+
+// ASSIGN MEMBER TO PURCHASE ITEMS
+export const assignTask = async (req, res) => {
+  try {
+    const { groupID, memberID, items } = req.body;
+    const adminID = req.user.userId; // Lấy adminID từ token sau khi xác thực
+
+    // Kiểm tra đầu vào
+    if (!groupID || !memberID || !items || !Array.isArray(items)) {
+      return res.status(400).json({ message: "Group ID, Member ID, and items are required, and items should be an array." });
+    }
+
+    // Kiểm tra nhóm có tồn tại không
+    const group = await Group.findOne({ groupId: groupID });
+    if (!group) {
+      return res.status(404).json({ message: "Group not found." });
+    }
+
+    // Kiểm tra quyền admin
+    if (group.admin !== adminID) {
+      return res.status(403).json({ message: "Only the admin can assign members to purchase items." });
+    }
+
+    // Kiểm tra xem người dùng có phải là thành viên của nhóm không
+    if (!group.groupMembers.includes(memberID)) {
+      return res.status(400).json({ message: "User is not a member of the group." });
+    }
+
+    // Thêm nhiệm vụ mua hàng vào danh sách nhiệm vụ hàng ngày của thành viên
+    const member = await User.findOne({ userId: memberID });
+    if (!member) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    member.dailyTask.push({ groupID, items });
+    await member.save();
+
+    return res.status(200).json({
+      message: `Member ${memberID} has been assigned to purchase items successfully.`,
+      tasks: member.dailyTask,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "An error occurred while assigning member to purchase items.",
       error: error.message,
     });
   }

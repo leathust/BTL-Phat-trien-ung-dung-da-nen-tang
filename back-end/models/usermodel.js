@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema({
       required: false,
     },
     dailyTask: {
-      type: [String],
+      type: [Object],
       default: [],
     },
     refreshToken: {
