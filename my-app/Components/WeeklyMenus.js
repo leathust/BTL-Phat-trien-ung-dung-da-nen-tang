@@ -84,7 +84,7 @@ const WeeklyMenus = ({ navigation }) => {
                     if (currentMealPlan[item].length > 0) {
                         return (
                             <TouchableOpacity style={[styles.mealContainer, item === 'Bữa sáng' ? { backgroundColor: 'papayawhip' } : item === 'Bữa trưa' ? { backgroundColor: 'sandybrown' } : item === 'Bữa tối' ? { backgroundColor: 'lightsteelblue' } : item === 'Bữa phụ' ? { backgroundColor: 'mediumseagreen' } : { backgroundColor: 'lightgray' }]}
-                                onPress={() => navigation.navigate('MealDetail', { mealType: item, dishes: currentMealPlan[item] })}
+                                onPress={() => navigation.navigate('MealDetail', { mealType: item, dishes: currentMealPlan[item], date: thisWeek.find(item => item[selectedDay])?.[selectedDay] })}
                             >
 
                                 <Text style={styles.mealTitle}>{item}</Text>

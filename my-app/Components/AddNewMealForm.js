@@ -24,7 +24,7 @@ const AddNewMealForm = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <Text style={styles.label}>Select Meal Type:</Text>
+            <Text style={styles.label}>Chọn bữa ăn:</Text>
             <Picker
                 selectedValue={selectedMealType}
                 style={styles.picker}
@@ -35,7 +35,7 @@ const AddNewMealForm = ({ navigation, route }) => {
                 ))}
             </Picker>
 
-            <Text style={styles.label}>Number of People:</Text>
+            <Text style={styles.label}>Số lượng người:</Text>
             <TextInput
                 style={styles.input}
                 keyboardType="numeric"
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     picker: {
-        height: 50,
+        height: 80,
         width: '100%',
         marginBottom: 20,
     },
