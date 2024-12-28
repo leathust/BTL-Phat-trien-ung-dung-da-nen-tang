@@ -10,10 +10,10 @@ const MealProvider = ({ children }) => {
     const units = [{id: '0', name: 'đĩa'}, {id: '1', name: 'cái'}, {id: '2', name: 'bát'}, {id: '3', name: 'cốc'}];
     const dishtypes = [{id: '00', name: 'Thịt - Đạm'}, {id: '01', name: 'Tinh bột'}, {id: '10', name: 'Sữa'}];
 
-    const [meals, setMeals] = useState([{ id: '1', type: 'Bữa sáng', date: '2024-12-28', numOfPeople: 1, dishesIds: [] },
-                                        { id: '2', type: 'Bữa sáng', date: '2024-12-27', numOfPeople: 1, dishesIds: [] },
+    const [meals, setMeals] = useState([{ id: '1', type: 'Bữa sáng', date: '2024-12-28', numOfPeople: 1, dishesIds: ['00'] },
+                                        { id: '2', type: 'Bữa sáng', date: '2024-12-27', numOfPeople: 1, dishesIds: ['01'] },
                                         { id: '3', type: 'Bữa tối', date: '2024-12-28', numOfPeople: 2, dishesIds: [] },
-                                        { id: '4', type: 'Bữa phụ', date: '2024-12-26', numOfPeople: 4, dishesIds: [] }
+                                        { id: '4', type: 'Bữa phụ', date: '2024-12-26', numOfPeople: 4, dishesIds: ['10', '11'] }
                                     ]);
     
     const [dishes, setDishes] = useState([{ id: '00', name: 'Bún chả', type: 'Thịt - Đạm', count: 1, unit: 'đĩa', ingredients: 'none' },
@@ -43,9 +43,12 @@ const MealProvider = ({ children }) => {
         const newMeals = meals.filter(item => item.id !== id);
         setMeals(newMeals);
     };
+    const getMealsByDate = (date) => {
+        return meals.filter(meal => meal.date === date);
+    };
 
     return (
-        <MealContext.Provider value={{ meals, addMeal, removeMeal, dishes, addDish, removeDish, mealTypes, units, dishtypes }}>
+        <MealContext.Provider value={{ meals, addMeal, removeMeal, dishes, addDish, removeDish, mealTypes, units, dishtypes, getMealsByDate }}>
             {children}
         </MealContext.Provider>
     );
