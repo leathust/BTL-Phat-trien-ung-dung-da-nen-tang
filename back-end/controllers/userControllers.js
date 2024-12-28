@@ -1,6 +1,7 @@
 import { createAccessToken, createRefreshToken } from '../services/tokenServices.js';
 import User from "./../models/userModel.js";
 import nodemailer from 'nodemailer';
+import bcrypt from 'bcrypt';
 
 // REGISTER
 export const userRegister = async (req, res) => {
@@ -71,14 +72,14 @@ export const userLogin = async (req, res) => {
     }
 
     // Tạo Access Token và Refresh Token
-    const accessToken = createAccessToken({ userId: user.userId, email: user.email });
+    const accessToken = createAccessToken({ userId: user.userId, email: user.email, role: user.role });
     const refreshToken = createRefreshToken({ userId: user.userId });
 
     // Trả về Access Token và Refresh Token trong response body
     return res.status(200).json({
       message: "Login successful!",
       accessToken,
-      refreshToken,  // Trả về refresh token thay vì lưu trong cookie
+      refreshToken,  // Trả về refresh token
     });
   } catch (error) {
     console.error("Error in userLogin:", error.message);
@@ -89,14 +90,7 @@ export const userLogin = async (req, res) => {
 // LOGOUT
 export const userLogout = async (req, res) => {
   try {
-    // Xóa cookie refreshToken
-    res.clearCookie("refreshToken", {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // chỉ dùng trong HTTPS
-      sameSite: "Strict",
-    });
-
-    // Trả về phản hồi thành công
+    // Xóa accesstoken và refreshtoken ở phía client...(Backend không làm gì cả)
     return res.status(200).json({ message: "Logout successful." });
   } catch (error) {
     console.error("Error in userLogout:", error.message);
@@ -107,7 +101,7 @@ export const userLogout = async (req, res) => {
 // REFRESH TOKEN
 export const refreshToken = async (req, res) => {
   try {
-    const refreshToken = req.cookies.refreshToken; // Lấy refresh token từ cookie
+    const refreshToken = req.headers['authorization']?.split(' ')[1]; // Lấy refresh token từ header
 
     // Kiểm tra xem refresh token có tồn tại không
     if (!refreshToken) {
@@ -118,7 +112,7 @@ export const refreshToken = async (req, res) => {
     const decoded = verifyRefreshToken(refreshToken);
 
     // Tạo Access Token mới
-    const accessToken = createAccessToken({ userId: decoded.userId, email: decoded.email });
+    const accessToken = createAccessToken({ userId: decoded.userId, email: decoded.email, role: decoded.role });
 
     // Trả về Access Token mới trong phản hồi
     return res.status(200).json({
@@ -142,7 +136,11 @@ export const getVerificationCode =  async (req, res) => {
 
   // Tạo mã xác minh (6 chữ số ngẫu nhiên)
   const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
-
+  const user = await User.findOneAndUpdate(
+      { email },
+      { verificationCode },
+      { new: true } // Trả về tài liệu đã được cập nhật
+    );
   // Cấu hình transporter cho Nodemailer
   const transporter = nodemailer.createTransport({
     service: 'gmail', // Bạn có thể thay bằng dịch vụ khác như Outlook, Yahoo
@@ -175,23 +173,17 @@ export const getVerificationCode =  async (req, res) => {
 // VERIFY EMAIL
 export const verifyEmail = async (req, res) => {
   try {
-    const { code, token } = req.body;
+    const { code } = req.body;  // Chỉ cần mã xác minh từ yêu cầu client
 
-    // Kiểm tra nếu mã xác minh hoặc token không được cung cấp
-    if (!code || !token) {
-      return res.status(400).json({ message: "Verification code and token are required." });
+    // Kiểm tra nếu mã xác minh không được cung cấp
+    if (!code) {
+      return res.status(400).json({ message: "Verification code is required." });
     }
 
-    // Xác thực token
-    let decoded;
-    try {
-      decoded = verifyAccessToken(token); // Sử dụng hàm verifyAccessToken từ tokenService
-    } catch (error) {
-      return res.status(5003).json({ message: "Token Denied" });
-    }
+    // Lấy thông tin người dùng từ req.user (được cung cấp từ middleware xác thực token)
+    const user = req.user;  // 'req.user' đã được xác thực từ middleware
 
-    // Tìm người dùng dựa trên thông tin từ token
-    const user = await User.findOne({ userId: decoded.userId });
+    // Kiểm tra nếu người dùng không tồn tại
     if (!user) {
       return res.status(404).json({ message: "User not found." });
     }
@@ -217,6 +209,7 @@ export const verifyEmail = async (req, res) => {
     return res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
+
 
 // FIND USER BY NAME
 export const findUserByName = async (req, res) => {
@@ -289,8 +282,6 @@ export const findUserById = async (req, res) => {
     return res.status(500).json({ message: "Server error. Please try again later." });
   }
 };
-
-import bcrypt from 'bcrypt';
 
 // CHANGE PASSWORD
 export const changePassword = async (req, res) => {

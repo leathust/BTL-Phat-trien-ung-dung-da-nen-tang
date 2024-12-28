@@ -9,7 +9,7 @@ userRouter.route('/login').post(userControllers.userLogin);
 userRouter.route('/logout').post(userControllers.userLogout);
 userRouter.route('/refresh-token').post(userControllers.refreshToken);
 userRouter.route('/get-verification-code').post(userControllers.getVerificationCode);
-userRouter.route('/verify-email').post(userControllers.verifyEmail);
+userRouter.route('/verify-email').post(authenticateToken, userControllers.verifyEmail);
 userRouter.route('/find-by-name').get(userControllers.findUserByName);
 userRouter.route('/find-by-id').get(userControllers.findUserById);
 userRouter.route('/change-password').post(authenticateToken, userControllers.changePassword);

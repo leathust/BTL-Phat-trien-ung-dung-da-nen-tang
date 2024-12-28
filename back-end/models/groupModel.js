@@ -6,12 +6,14 @@ const groupSchema = new mongoose.Schema({
     type: String,
     required: [true, "Group name is required"],
     trim: true,
+    minlength: [2, "Group name must be at least 2 characters long"],
     maxlength: [100, "Group name cannot exceed 100 characters"],
   },
   groupDescription: {
     type: String,
     required: [true, "Group description is required"],
     trim: true,
+    minlength: [2, "Group description must be at least 2 characters long"],
     maxlength: [500, "Group description cannot exceed 500 characters"],
   },
   groupAvatar: {
@@ -32,7 +34,7 @@ const groupSchema = new mongoose.Schema({
     },
   ],
   sharedLists: {
-    type: [String], // Lưu danh sách các listId đã được chia sẻ với nhóm
+    type: [mongoose.Schema.Types.ObjectId], // Lưu danh sách các listId đã được chia sẻ với nhóm
     default: [],
     ref: "List",
   },

@@ -7,18 +7,28 @@ const listSchema = new mongoose.Schema({
     required: [true, "UserId is required"],
     ref: "User",
   },
-  itemId: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: [true, "ItemId is required"],
-    ref: "Item",
-  },
+  items: [{
+    item: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Item',
+      required: true
+    },
+    quantity: {
+      type: Number,
+      required: true
+    },
+    unit: {
+      type: String,
+      required: true
+    },
+  }],
   totalCost: {
     type: Number,
-    required: true,
+    required: false,
     min: [0, "Total cost cannot be negative"],
   },
   dateToBuy: {
-    type: Date, // Hoặc `Date` nếu bạn muốn lưu trữ dưới dạng ngày
+    type: Date, // Ngày mua hàng
     required: false,
     trim: true,
   },

@@ -11,15 +11,24 @@ const dishSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  ingredient: [{
-    type: mongoose.Schema.Types.ObjectId,  // Tham chiếu đến model Item
-    ref: 'Item'  // Đảm bảo 'Item' là một model hợp lệ
+  ingredients: [{
+    item: {
+      type: mongoose.Schema.Types.ObjectId,  // Tham chiếu đến model Item
+      ref: 'Item',  // Đảm bảo 'Item' là một model hợp lệ
+      required: true
+    },
+    quantity: {
+      type: Number,
+    },
+    unit: {
+      type: String,
+    }
   }],
   instruction: {
     type: String,
     required: true
   },
-  image: {
+  dishImage: {
     type: String,
     required: false // URL hoặc đường dẫn đến ảnh
   }

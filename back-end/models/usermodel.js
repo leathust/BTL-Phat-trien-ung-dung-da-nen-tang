@@ -22,18 +22,6 @@ const userSchema = new mongoose.Schema({
       required: [true, "The password is required"],
       minlength: [6, "Password must be at least 6 characters long"],
     },
-    passwordConfirm: {  //Trường này sẽ KHÔNG được lưu vào cơ sở dữ liệu
-      type: String,
-      required: [true, "Please confirm your password"],
-      validate: {
-        // Custom validator để kiểm tra mật khẩu và passwordConfirm
-        validator: function (value) {
-          return value === this.password;
-        },
-        message: "Passwords do not match",
-      },
-    },
-    
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -62,18 +50,28 @@ const userSchema = new mongoose.Schema({
       type: Boolean,
       default: false,
     },
-    task: {
+    verificationCode: {
+      type: String,
+      required: false,
+    },
+    dailyTask: {
       type: [String],
       default: [],
     },
+    refreshToken: {
+      type: String,
+      required: false,
+    },
+    accessToken: {
+      type: String,
+      required: false,
+    },
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
 }, { timestamps: true });
-
-//KHÔNG lưu passwordConfirm vào cơ sở dữ liệu
-userSchema.pre("save", function (next) {
-  this.passwordConfirm = undefined;
-  next();
-});
-
 
 // Mã hóa mật khẩu trước khi lưu
 userSchema.pre("save", async function (next) {
