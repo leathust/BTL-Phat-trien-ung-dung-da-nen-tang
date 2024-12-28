@@ -67,6 +67,30 @@ const ShopProvider = ({ children }) => {
         setGroups(newGroups);
     };
 
+    // Function to remove a member from a group
+    const removeMemberFromGroup = (groupId, userId) => {
+        // Remove all tasks assigned to the user
+        const group = groups.find(group => group.groupId === groupId);
+        const taskIDs = group.taskIDs;
+        setTasks(
+            tasks.filter(task => !taskIDs.includes(task.id) || task.userId !== userId)
+        );
+
+        // Remove the family list that assigned to the user
+        const newLists = lists.filter(item => item.listId !== groupId || (item.listId === groupId && item.userId !== userId));
+        setLists(newLists); 
+
+        setGroups(
+            groups.map(group =>
+                group.groupId === groupId
+                    ? { ...group, userIDs: group.userIDs.filter(id => id !== userId) }
+                    : group
+            )
+        );
+
+    };
+
+
     // Function to toggle task completion
     const toggleTaskCompletion = (taskId) => {
         setTasks(
@@ -103,7 +127,7 @@ const ShopProvider = ({ children }) => {
     };
 
     return (
-        <ShopContext.Provider value={{ tasks, addTask, removeTask, toggleTaskCompletion, lists, addList, removeList, groups, addGroup, removeGroup, addUserToGroup, addTaskToGroup }}>
+        <ShopContext.Provider value={{ tasks, addTask, removeTask, toggleTaskCompletion, lists, addList, removeList, groups, addGroup, removeGroup, addUserToGroup, addTaskToGroup, removeMemberFromGroup }}>
             {children}
         </ShopContext.Provider>
     );
