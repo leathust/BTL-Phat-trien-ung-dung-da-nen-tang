@@ -4,10 +4,10 @@ import { authenticateToken } from '../middlewares/tokenMiddlewares.js';
 
 const router = express.Router();
 
-router.post('/meals', authenticateToken, mealController.createMeal); // Tạo một meal mới
-router.put('/meals/:id', authenticateToken, mealController.updateMeal); // Sửa một meal theo ID
-router.delete('/meals/:id', authenticateToken, mealController.deleteMeal); // Xóa một meal theo ID
-router.get('/meals/user/:userId', authenticateToken, mealController.getAllMeals); // Lấy tất cả các meal của một userId
-router.get('/meals/:id', authenticateToken, mealController.getMealById); // Lấy một meal theo ID
+router.post('/create', authenticateToken, mealController.createMeal); // Tạo một meal mới
+router.put('/update/:id', authenticateToken, mealController.updateMeal); // Sửa một meal theo ID
+router.delete('/delete/:id', authenticateToken, mealController.deleteMeal); // Xóa một meal theo ID
+router.get('/get-all-meals/user/:userId', authenticateToken, mealController.getAllMeals); // Lấy tất cả các meal của một userId
+router.get('/get-meal/:id', authenticateToken, mealController.getMealById); // Lấy một meal theo ID
 
 export default router;

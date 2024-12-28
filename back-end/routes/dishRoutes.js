@@ -4,10 +4,10 @@ import { authenticateToken } from '../middlewares/tokenMiddlewares.js';
 
 const dishRouter = express.Router();
 
-dishRouter.route('/dish').post(authenticateToken, dishController.createDish);
-dishRouter.route('/dish').put(authenticateToken, dishController.updateDish);
-dishRouter.route('/dish').delete(authenticateToken, dishController.deleteDish);
-dishRouter.route('/dish').get(authenticateToken, dishController.getAllDishes);
-dishRouter.route('/dish/:id').get(authenticateToken, dishController.getDishById);
+dishRouter.route('/create').post(authenticateToken, dishController.createDish);
+dishRouter.route('/update').put(authenticateToken, dishController.updateDish);
+dishRouter.route('/delete').delete(authenticateToken, dishController.deleteDish);
+dishRouter.route('/get-all-dishs').get(authenticateToken, dishController.getAllDishes);
+dishRouter.route('/get-dish/:id').get(authenticateToken, dishController.getDishById);
 
 export default dishRouter;
