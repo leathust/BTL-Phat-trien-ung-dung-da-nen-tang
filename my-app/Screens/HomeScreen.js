@@ -1,48 +1,63 @@
 import React from 'react';
-import { View, Text, Button, StyleSheet, Image } from 'react-native';
+import { View, Text, Button, StyleSheet, Image, Platform } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import FoodScreen from './FoodScreen';
 import MealScreen from './MealScreen';
 import ShopScreen from './ShopScreen';
 
 const Tab = createMaterialTopTabNavigator();
+const BottomTab = createBottomTabNavigator();
 
 let username = 'Nhóm 18';
 
-function UserStatusBar() {
-  return (
-    <View style={styles.headerContainer}>
-      <Icon name="person-circle" size={40} color="green" />
-      <View style={styles.userInfo}>
-        <Text style={styles.userName}> Đi chợ cùng {username}! </Text>
-      </View>
-    </View>
-  );
-}
+const HomeScreen = ({ navigation }) => {
+  if (Platform.OS === 'ios') {
+    return (
+      <BottomTab.Navigator
+        initialRouteName="Mua sắm"
+        tabBarOptions={{
+          labelStyle: {
+            fontSize: 14,
+            fontWeight: 'bold',
+          },
+          style: {
+            backgroundColor: '#6200ea',
+          },
+          indicatorStyle: {
+            backgroundColor: '#ffffff',
+          },
+        }}
+      >
+        <BottomTab.Screen name="Thực đơn" component={MealScreen} />
+        <BottomTab.Screen name="Mua sắm" component={ShopScreen} />
+        <BottomTab.Screen name="Thực phẩm" component={FoodScreen} />
 
-const HomeScreen = ({navigation}) => {
+      </BottomTab.Navigator>
+    );
+  }
+
   return (
-        <Tab.Navigator
-          initialRouteName="Mua sắm"
-          tabBarOptions={{
-            labelStyle: {
-              fontSize: 14,
-              fontWeight: 'bold',
-            },
-            style: {
-              backgroundColor: '#6200ea',
-            },
-            indicatorStyle: {
-              backgroundColor: '#ffffff',
-            },
-          }}
-        >
-          <Tab.Screen name="Thực đơn" component={MealScreen} />
-          <Tab.Screen name="Mua sắm" component={ShopScreen} />
-          <Tab.Screen name="Thực phẩm" component={FoodScreen} />
-        </Tab.Navigator>
+    <Tab.Navigator
+      initialRouteName="Mua sắm"
+      tabBarOptions={{
+        labelStyle: {
+          fontSize: 14,
+          fontWeight: 'bold',
+        },
+        style: {
+          backgroundColor: '#6200ea',
+        },
+        indicatorStyle: {
+          backgroundColor: '#ffffff',
+        },
+      }}
+    >
+      <Tab.Screen name="Thực đơn" component={MealScreen} />
+      <Tab.Screen name="Mua sắm" component={ShopScreen} />
+      <Tab.Screen name="Thực phẩm" component={FoodScreen} />
+    </Tab.Navigator>
   );
 };
 
