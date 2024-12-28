@@ -7,7 +7,7 @@ const MenuStack = createNativeStackNavigator();
 const Menus = () => {
     return (
             <MenuStack.Navigator initialRouteName="WeeklyMenus">
-                <MenuStack.Screen name="WeeklyMenus" component={WeeklyMenus} />
+                <MenuStack.Screen name="WeeklyMenus" component={WeeklyMenus} options={{headerShown: false}} />
             </MenuStack.Navigator>
     );
 };
