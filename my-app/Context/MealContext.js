@@ -60,8 +60,13 @@ const MealProvider = ({ children }) => {
         return meals.filter(meal => meal.date === date);
     };
 
+    const getMealIdByDateAndType = (date, type) => {
+        const meal = meals.find(meal => meal.date === date && meal.type === type);
+        return meal ? meal.id : null;
+    };
+
     return (
-        <MealContext.Provider value={{ meals, addMeal, removeMeal, dishes, addDish, removeDish, removeDishFromMeal, mealTypes, units, dishTypes, getMealsByDate }}>
+        <MealContext.Provider value={{ meals, addMeal, removeMeal, getMealIdByDateAndType, dishes, addDish, removeDish, removeDishFromMeal, mealTypes, units, dishTypes, getMealsByDate }}>
             {children}
         </MealContext.Provider>
     );

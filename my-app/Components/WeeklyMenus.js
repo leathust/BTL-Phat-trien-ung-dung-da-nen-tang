@@ -23,7 +23,7 @@ function getTodayWeekday() {
 //     CN: { breakfast: 'Cereal', lunch: 'Roast Beef', dinner: 'Roast Chicken' },
 // };
 
-const WeeklyMenus = () => {
+const WeeklyMenus = ({ navigation }) => {
 
 
     const [selectedDay, setSelectedDay] = useState(getTodayWeekday());  // Default to Today
@@ -83,16 +83,18 @@ const WeeklyMenus = () => {
                 renderItem={({ item }) => {
                     if (currentMealPlan[item].length > 0) {
                         return (
-                            <View style={styles.mealContainer}>
-                            <TouchableOpacity style={{ flex: 1, flexDirection: 'row'}}>
-                                <View style={{ flex: 1 }}>
+                            <TouchableOpacity style={[styles.mealContainer, item === 'Bữa sáng' ? { backgroundColor: 'papayawhip' } : item === 'Bữa trưa' ? { backgroundColor: 'sandybrown' } : item === 'Bữa tối' ? { backgroundColor: 'lightsteelblue' } : item === 'Bữa phụ' ? { backgroundColor: 'mediumseagreen' } : { backgroundColor: 'lightgray' }]}
+                                onPress={() => navigation.navigate('MealDetail', { mealType: item, dishes: currentMealPlan[item] })}
+                            >
+
                                 <Text style={styles.mealTitle}>{item}</Text>
-                                </View>
-                                <TouchableOpacity style={{marginRight: 20, flex: 1}}>
+                                <TouchableOpacity style={{padding:5}} onPress={() => {
+                                    const mealId = getMealsByDate(thisWeek.find(item => item[selectedDay])?.[selectedDay]).find(meal => meal.type === item).id;
+                                    removeMeal(mealId);
+                                }}>
                                     <Icon name="trash" size={35} color="purple" />
                                 </TouchableOpacity>
                             </TouchableOpacity>
-                            </View>
                         );
                     }
                     return null;
@@ -139,11 +141,10 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         borderColor: 'blue',
         borderWidth: 1,
+        marginBottom: 10,
     },
     mealTitle: {
         fontSize: 18,
-        marginBottom: 5,
-        marginTop: 5,
         color: '#333',
     },
 });
