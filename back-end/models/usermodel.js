@@ -12,9 +12,9 @@ const userSchema = new mongoose.Schema({
       minlength: [2, "The minlength is 2"],
       validate: {
         validator: function (value) {
-          return /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂÂÊÔƠƯ\s]+$/.test(value);
+          return /^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơưĂÂÊÔƠƯ\s]+$/.test(value);
         },
-        message: "The user name must contain only letters, spaces, and valid Vietnamese characters",
+        message: "The user name must contain only letters, spaces, and valid Vietnamese characters"
       },
     },    
     password: {
@@ -38,7 +38,7 @@ const userSchema = new mongoose.Schema({
       unique: true,
       trim: true,
       validate: {
-        validator: (phone) => /^\+?[1-9]\d{9,14}$/.test(phone),
+        validator: (phone) => /^\+?[0-9]\d{9,14}$/.test(phone),
         message: (props) => `${props.value} is not a valid phone number!`,
       },
     },

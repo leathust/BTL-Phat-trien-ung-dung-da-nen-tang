@@ -64,7 +64,6 @@ export const userLogin = async (req, res) => {
     if (!user) {
       return res.status(401).json({ message: "Invalid credentials." });
     }
-
     // Kiểm tra mật khẩu đúng hay không
     const isPasswordValid = await user.isPasswordCorrect(password);
     if (!isPasswordValid) {
@@ -145,14 +144,14 @@ export const getVerificationCode =  async (req, res) => {
   const transporter = nodemailer.createTransport({
     service: 'gmail', // Bạn có thể thay bằng dịch vụ khác như Outlook, Yahoo
     auth: {
-      user: process.env.EMAIL || 'your email here', // Email của bạn
+      user: process.env.EMAIL || 'your email', // Email của bạn
       pass: process.env.EMAIL_APP_PASSWORD || 'your app password', // Mật khẩu ứng dụng
     },
   });
 
   // Cấu hình nội dung email
   const mailOptions = {
-    from: process.env.EMAIL || 'your email here',
+    from: process.env.EMAIL || 'your email',
     to: email,
     subject: 'Verification Code',
     text: `Your verification code is: ${verificationCode}`,

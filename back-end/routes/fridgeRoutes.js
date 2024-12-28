@@ -4,7 +4,7 @@ import { authenticateToken } from '../middlewares/tokenMiddlewares.js';
 
 const fridgeRouter = express.Router();
 
-frightRouter.get('/get', authenticateToken, fridgeController.getAllFridgeItems);
+fridgeRouter.get('/get', authenticateToken, fridgeController.getAllFridgeItems);
 fridgeRouter.post('/add', authenticateToken, fridgeController.addItemToFridge);
 fridgeRouter.post('/remove', authenticateToken, fridgeController.removeItemFromFridge);
 fridgeRouter.post('/expiring', authenticateToken, fridgeController.getExpiringItems);
