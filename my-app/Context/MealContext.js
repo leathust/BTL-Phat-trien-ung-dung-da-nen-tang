@@ -44,6 +44,10 @@ const MealProvider = ({ children }) => {
     };
 
     const removeMeal = (id) => {
+        const meal = meals.find(item => item.id === id);
+        if (meal) {
+            meal.dishesIds.forEach(dishId => removeDish(dishId));
+        }
         const newMeals = meals.filter(item => item.id !== id);
         setMeals(newMeals);
     };
