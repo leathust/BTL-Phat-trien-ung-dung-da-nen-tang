@@ -19,7 +19,7 @@ const FormWithAlert = ({ navigation, route }) => {
     } else {
       // Alert.alert('Success', 'Form submitted successfully');
       itemName.trim();
-      const task = { id: Math.random().toString(), listId: listId, text: itemName, count: count, unit: unit, completed: false };
+      const task = { id: Math.random().toString(), listId: listId, userId: '0000', text: itemName, count: count, unit: unit, completed: false };
       addTask(task);
       setItemName('');
       setCount('');
