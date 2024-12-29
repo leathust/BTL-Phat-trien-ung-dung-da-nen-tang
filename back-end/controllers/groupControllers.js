@@ -3,6 +3,7 @@ import User from "../models/userModel.js";
 import { sendPushNotification } from '../services/notifServices.js';
 import Invitation from '../models/invitationModel.js';
 import Notification from '../models/notifModel.js';
+import Task from "../models/taskModel.js";
 
 // CREATE A NEW GROUP
 export const createGroup = async (req, res) => {
@@ -377,12 +378,22 @@ export const assignTask = async (req, res) => {
       return res.status(404).json({ message: "User not found." });
     }
 
-    member.dailyTask.push({ groupID, items });
-    await member.save();
+    // // Định dạng ngày tháng năm
+    // const dateToBuy = new Date().toLocaleDateString('en-GB'); // Định dạng ngày tháng năm theo định dạng dd/mm/yyyy
+    // member.dailyTask.push({ groupID, items, dateToBuy });
+    // await member.save();
+
+    // Tạo task mới
+    const task = new Task.create({
+      groupId: groupID,
+      userId: memberID,
+      items,
+    });
+    await task.save();
 
     return res.status(200).json({
       message: `Member ${memberID} has been assigned to purchase items successfully.`,
-      tasks: member.dailyTask,
+      tasks: task,
     });
   } catch (error) {
     return res.status(500).json({

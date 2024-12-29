@@ -54,10 +54,10 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: false,
     },
-    dailyTask: {
-      type: [Object],
-      default: [],
-    },
+    // dailyTask: {
+    //   type: [Object],
+    //   default: [],
+    // },
     role: {
       type: String,
       enum: ["user", "admin"],

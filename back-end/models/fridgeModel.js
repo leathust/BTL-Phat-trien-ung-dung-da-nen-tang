@@ -14,11 +14,13 @@ const fridgeSchema = new mongoose.Schema({
     },
     quantity: {
       type: Number,
-      required: true
+      required: true,
+      default: 1,
     },
     unit: {
       type: String,
-      required: true
+      required: true,
+      default: 'kg',
     },
     expiryDate: {
       type: Date,

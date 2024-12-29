@@ -1,7 +1,12 @@
 import mongoose from "mongoose";
 
 // Định nghĩa Schema
-const listSchema = new mongoose.Schema({
+const taskSchema = new mongoose.Schema({
+  groupId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: [true, "The groupId id is required"],
+    ref: "Group",
+  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     required: [true, "UserId is required"],
@@ -21,7 +26,7 @@ const listSchema = new mongoose.Schema({
     unit: {
       type: String,
       required: true,
-      default: "kg",
+        default: "kg",
     },
   }],
   totalCost: {
@@ -31,13 +36,18 @@ const listSchema = new mongoose.Schema({
   },
   dateToBuy: {
     type: Date, // Ngày mua hàng
-    required: false,
-    trim: true,
+    required: true,
+    default: Date.now(),
+  },
+  status: {
+    type: String,
+    enum: ["pending", "completed"],
+    default: "pending",
   },
 }, { timestamps: true });
 
 
 // Export model
-const List = mongoose.model("List", listSchema);
+const Task = mongoose.model("Task", taskSchema);
 
-export default List;
+export default Task;
