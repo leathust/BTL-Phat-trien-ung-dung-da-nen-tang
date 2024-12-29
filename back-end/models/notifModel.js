@@ -17,6 +17,11 @@ const notifSchema = new mongoose.Schema({
     data: {
         type: Object,
         required: true
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'sent', 'failed'], // Trạng thái thông báo
+        default: 'pending' // Mặc định là 'pending' khi thông báo chưa được gửi
     }
 }, { timestamps: true });
 

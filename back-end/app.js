@@ -11,6 +11,7 @@ import itemRouter from "./routes/itemRoutes.js";
 import dishRouter from "./routes/dishRoutes.js";
 import mealRouter from "./routes/mealRoutes.js";
 import fridgeRouter from "./routes/fridgeRoutes.js";
+import './cronJobs.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);

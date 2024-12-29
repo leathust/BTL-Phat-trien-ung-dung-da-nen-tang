@@ -1,5 +1,8 @@
 import Group from "../models/groupModel.js";
 import User from "../models/userModel.js";
+import { sendPushNotification } from '../services/notifServices.js';
+import Invitation from '../models/invitationModel.js';
+import Notification from '../models/notifModel.js';
 
 // CREATE A NEW GROUP
 export const createGroup = async (req, res) => {
@@ -86,58 +89,74 @@ export const getGroupInfo = async (req, res) => {
   }
 };
 
-
-
-// SEND INVITATION TO JOIN A GROUP
+//SEND INVITATION TO JOIN A GROUP
 export const sendInvitation = async (req, res) => {
   try {
     const { groupID, userID } = req.body;
 
-    // Kiểm tra đầu vào
+    // Kiểm tra dữ liệu đầu vào
     if (!groupID || !userID) {
-      return res.status(400).json({ message: "Group ID and User ID are required." });
+      return res.status(400).json({ message: 'Group ID and User ID are required.' });
     }
 
-    // Kiểm tra xem nhóm có tồn tại không
+    // Kiểm tra sự tồn tại của nhóm và người dùng
     const group = await Group.findOne({ groupId: groupID });
-    if (!group) {
-      return res.status(404).json({ message: "Group not found." });
-    }
+    if (!group) return res.status(404).json({ message: 'Group not found.' });
 
-    // Kiểm tra xem người dùng có tồn tại không
     const user = await User.findOne({ userId: userID });
-    if (!user) {
-      return res.status(404).json({ message: "User not found." });
-    }
+    if (!user) return res.status(404).json({ message: 'User not found.' });
 
-    // Kiểm tra xem người dùng đã là thành viên của nhóm chưa
+    // Kiểm tra người dùng đã là thành viên chưa
     if (group.groupMembers.includes(userID)) {
-      return res.status(400).json({ message: "User is already a member of the group." });
+      return res.status(400).json({ message: 'User is already a member of the group.' });
     }
 
-    // Lưu trạng thái lời mời vào cơ sở dữ liệu
+    // Tạo lời mời và lưu vào DB
     const invitation = new Invitation({
       groupID,
       userID,
-      status: 'pending', // Trạng thái lời mời
+      status: 'pending',
     });
     await invitation.save();
-    
-    // Tạo thông báo
+
+    // Tạo thông báo trong hệ thống
     const notification = new Notification({
       userID,
       message: `You have been invited to join the group ${group.groupName}.`,
       type: 'invitation',
       data: { groupID, invitationID: invitation._id },
+      status: 'pending', // Lưu thông báo với trạng thái pending
     });
     await notification.save();
+
+    // Gửi thông báo đẩy qua FCM
+    if (user.fcmToken) {
+      try {
+        await sendPushNotification(
+          user.fcmToken,
+          'Group Invitation',
+          `You have been invited to join the group ${group.groupName}.`,
+          { groupID: groupID, invitationID: invitation._id }
+        );
+
+        // Nếu gửi thành công, cập nhật trạng thái thông báo thành 'sent'
+        await Notification.updateOne(
+          { _id: notification._id },
+          { status: 'sent' }
+        );
+      } catch (error) {
+        // Nếu gửi không thành công, không thay đổi trạng thái
+        console.error('Error sending push notification:', error.message);
+      }
+    }
 
     return res.status(200).json({
       message: `Invitation sent to user ${userID} for group ${groupID} successfully.`,
     });
   } catch (error) {
+    console.error('Error in sending invitation:', error.message);
     return res.status(500).json({
-      message: "An error occurred while sending the invitation.",
+      message: 'An error occurred while sending the invitation.',
       error: error.message,
     });
   }
