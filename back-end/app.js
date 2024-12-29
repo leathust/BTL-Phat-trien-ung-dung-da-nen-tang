@@ -12,6 +12,7 @@ import itemRouter from "./routes/itemRoutes.js";
 import dishRouter from "./routes/dishRoutes.js";
 import mealRouter from "./routes/mealRoutes.js";
 import fridgeRouter from "./routes/fridgeRoutes.js";
+import adminRouter from "./routes/adminRoutes.js";
 import './cronJobs.js';
 
 const __filename = fileURLToPath(import.meta.url);
@@ -34,5 +35,6 @@ app.use('/api/v1/item', itemRouter);
 app.use('/api/v1/dish', dishRouter);
 app.use('/api/v1/meal', mealRouter);
 app.use('/api/v1/fridge', fridgeRouter);
+app.use('/api/v1/admin', adminRouter);
 
 export default app;
