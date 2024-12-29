@@ -24,7 +24,7 @@ const App = () => {
             options={({ navigation }) => ({
               title: 'Đi chợ tiện lợi',
               headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.navigate("Settingss")
+                <TouchableOpacity onPress={() => navigation.navigate("Setting")
                 }>
                   <Icon name="person-circle" size={40} color="green" />
                 </TouchableOpacity>
