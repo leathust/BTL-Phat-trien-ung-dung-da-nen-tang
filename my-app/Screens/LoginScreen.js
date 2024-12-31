@@ -22,12 +22,6 @@ const LoginScreen = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [isLogin, setIsLogin] = useState(true);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [forgotPasswordModalVisible, setForgotPasswordModalVisible] =
@@ -369,6 +363,7 @@ const styles = StyleSheet.create({
   modalMessage: {
     fontSize: 16,
     textAlign: "center",
+  },
   modalOverlay: {
     flex: 1,
     justifyContent: "center",
