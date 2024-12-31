@@ -22,6 +22,12 @@ const LoginScreen = ({ navigation }) => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
   const [forgotPasswordModalVisible, setForgotPasswordModalVisible] =
@@ -268,11 +274,29 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 10,
     elevation: 5,
+    flexGrow: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f4f4f4",
+    padding: 20,
+  },
+  formContainer: {
+    width: "100%",
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
+    fontWeight: "bold",
     marginBottom: 20,
+    textAlign: "center",
     textAlign: "center",
   },
   input: {
@@ -288,6 +312,22 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+  },
+  passwordContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderColor: "#ccc",
+    borderRadius: 5,
+    marginBottom: 15,
+    paddingHorizontal: 10,
+  },
+  passwordInput: {
+    flex: 1,
+    paddingVertical: 10,
     marginBottom: 15,
     paddingHorizontal: 10,
   },
@@ -296,6 +336,9 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   link: {
+    marginTop: 15,
+    color: "#007BFF",
+    textAlign: "center",
     marginTop: 15,
     color: "#007BFF",
     textAlign: "center",
@@ -326,7 +369,38 @@ const styles = StyleSheet.create({
   modalMessage: {
     fontSize: 16,
     textAlign: "center",
+  modalOverlay: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContainer: {
+    width: "80%",
+    backgroundColor: "#fff",
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
     marginBottom: 20,
+    textAlign: "center",
+  },
+  modalMessage: {
+    fontSize: 16,
+    textAlign: "center",
+    marginBottom: 20,
+  },
+  modalClose: {
+    marginTop: 15,
+    color: "#FF0000",
+    textAlign: "center",
   },
   modalClose: {
     marginTop: 15,

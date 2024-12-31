@@ -1,27 +1,79 @@
-// // MealContext.js
-// import React, { createContext, useState } from 'react';
 
-// const MealContext = createContext();
+import React, { createContext, useState } from "react";
 
-// export const MealProvider = ({ children }) => {
-//   const [selectedDay, setSelectedDay] = useState(null);
+const MealContext = createContext();
 
-//   // Dữ liệu thực đơn mẫu
-//   const mealsData = {
-//     Monday: { breakfast: 'Pancakes', lunch: 'Sandwich', dinner: 'Pizza' },
-//     Tuesday: { breakfast: 'Oatmeal', lunch: 'Salad', dinner: 'Spaghetti' },
-//     Wednesday: { breakfast: 'Eggs', lunch: 'Burger', dinner: 'Sushi' },
-//     Thursday: { breakfast: 'Toast', lunch: 'Pizza', dinner: 'Steak' },
-//     Friday: { breakfast: 'Cereal', lunch: 'Tacos', dinner: 'Pasta' },
-//     Saturday: { breakfast: 'Smoothie', lunch: 'Wrap', dinner: 'BBQ' },
-//     Sunday: { breakfast: 'Bagels', lunch: 'Soup', dinner: 'Roast Chicken' },
-//   };
+const MealProvider = ({ children }) => {        
+    
+    // const mealTypes = [{id: '00', name: 'Bữa sáng'}, {id: '01', name: 'Bữa trưa'}, 
+    //                     {id: '10', name: 'Bữa tối'}, {id: '11', name: 'Bữa phụ'}];    
+    // const units = [{id: '0', name: 'đĩa'}, {id: '1', name: 'cái'}, {id: '2', name: 'bát'}, {id: '3', name: 'cốc'}];
+    // const dishTypes = [{id: '00', name: 'Thịt - Đạm'}, {id: '01', name: 'Tinh bột'}, {id: '10', name: 'Sữa'}];
 
-//   return (
-//     <MealContext.Provider value={{ selectedDay, setSelectedDay, mealsData }}>
-//       {children}
-//     </MealContext.Provider>
-//   );
-// };
+    const mealTypes = ['Bữa sáng', 'Bữa trưa', 'Bữa tối', 'Bữa phụ'];
+    const units = ['đĩa', 'cái', 'bát', 'cốc'];
+    const dishTypes = ['Thịt - Đạm', 'Tinh bột', 'Sữa', 'Rau xanh', 'Cá', 'Chất béo', 'Trái cây', 'Đồ uống'];
 
-// export default MealContext;
+    const [meals, setMeals] = useState([{ id: '1', type: 'Bữa sáng', date: '2025-01-01', numOfPeople: 1, dishesIds: ['00'] },
+                                        { id: '2', type: 'Bữa sáng', date: '2025-01-02', numOfPeople: 1, dishesIds: ['01'] },
+                                        { id: '3', type: 'Bữa tối', date: '2024-12-29', numOfPeople: 2, dishesIds: ['00', '10', '11'] },
+                                        { id: '4', type: 'Bữa phụ', date: '2025-01-01', numOfPeople: 4, dishesIds: ['10', '11'] }
+                                    ]);
+    
+    const [dishes, setDishes] = useState([{ id: '00', name: 'Bún chả', type: 'Thịt - Đạm', count: 1, unit: 'đĩa', ingredients: 'none' },
+                                        { id: '01', name: 'Bánh mì', type: 'Thịt - Đạm', count: 1, unit: 'cái', ingredients: 'none' },
+                                        { id: '10', name: 'Mì tôm', type: 'Tinh bột', count: 1, unit: 'bát', ingredients: 'none' },
+                                        { id: '11', name: 'Sữa tươi', type: 'Sữa', count: 1, unit: 'cốc', ingredients: 'none' }
+                                    ]);
+    
+    const addMeal = (meal) => {
+        if (!meals.some(item => item.id === meal.id)) {
+            setMeals([...meals, meal]);
+        }
+    };
+
+    const addDish = (dish) => {
+        if (!dishes.some(item => item.id === dish.id)) {
+            setDishes([...dishes, dish]);
+        }
+    };
+
+    const removeDish = (id) => {
+        const newDishes = dishes.filter(item => item.id !== id);
+        setDishes(newDishes);
+    };
+
+    const removeMeal = (id) => {
+        const meal = meals.find(item => item.id === id);
+        if (meal) {
+            meal.dishesIds.forEach(dishId => removeDish(dishId));
+        }
+        const newMeals = meals.filter(item => item.id !== id);
+        setMeals(newMeals);
+    };
+
+    const removeDishFromMeal = (mealId, dishId) => {
+        const meal = meals.find(item => item.id === mealId);
+        if (meal) {
+            const newDishes = meal.dishesIds.filter(id => id !== dishId);
+            meal.dishesIds = newDishes;
+        }
+    };
+
+    const getMealsByDate = (date) => {
+        return meals.filter(meal => meal.date === date);
+    };
+
+    const getMealIdByDateAndType = (date, type) => {
+        const meal = meals.find(meal => meal.date === date && meal.type === type);
+        return meal ? meal.id : null;
+    };
+
+    return (
+        <MealContext.Provider value={{ meals, addMeal, removeMeal, getMealIdByDateAndType, dishes, addDish, removeDish, removeDishFromMeal, mealTypes, units, dishTypes, getMealsByDate }}>
+            {children}
+        </MealContext.Provider>
+    );
+};
+
+export { MealContext, MealProvider };
