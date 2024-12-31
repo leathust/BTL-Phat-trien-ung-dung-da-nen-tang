@@ -1,20 +1,23 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+import Cookbook from './Meal_Cookbook';
+import Menus from './Meal_Menus';
+import Recommend from './Meal_Recommend';
+import { MealProvider } from '../Context/MealContext';
+
+const Drawer1 = createDrawerNavigator();
 
 const MealScreen = () => {
-    return (
-        <View style={styles.screenContainer}>
-      <Text>Buy List Screen</Text>
-    </View>
-    );
-}; 
-
-const styles = StyleSheet.create({
-    screenContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    }
-});
+  return (
+    <MealProvider>
+      <Drawer1.Navigator initialRouteName='Thực đơn theo tuần'>
+        <Drawer1.Screen name='Thực đơn theo tuần' component={Menus} />
+        <Drawer1.Screen name='Sách công thức của tôi' component={Cookbook} />
+        <Drawer1.Screen name='Gợi ý món từ tủ lạnh' component={Recommend}/>
+      </Drawer1.Navigator>
+      </MealProvider>
+  );
+};
 
 export default MealScreen;

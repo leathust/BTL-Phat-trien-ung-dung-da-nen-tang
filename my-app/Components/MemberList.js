@@ -43,7 +43,7 @@ const MemberList = ({ navigation, route }) => {
                 renderItem={({ item }) => (
                     <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                         <View style={styles.item}>
-                            <Text style={styles.name}>{item}</Text>
+                            <Text style={styles.name}>{typeof item === 'string' ? item : JSON.stringify(item)}</Text>
                             <Text style={styles.phoneNumber}>phoneNumber</Text>
                         </View>
                         <TouchableOpacity style={{marginRight: 20}} onPress={() => trashButtonHandler(item)}>
