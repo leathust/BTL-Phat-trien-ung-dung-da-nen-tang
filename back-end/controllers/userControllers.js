@@ -6,25 +6,25 @@ import bcrypt from 'bcrypt';
 // REGISTER
 export const userRegister = async (req, res) => {
   try {
-    const { userName, password, email, phoneNumber } = req.body;
+    const { username, email, phone, password } = req.body;
 
     // Kiểm tra thông tin cần thiết
-    if (!userName || !password || !email) {
+    if (!username || !password || !email) {
       return res.status(400).json({ message: "All required fields must be provided." });
     }
 
     // Kiểm tra email hoặc số điện thoại đã tồn tại
-    const existingUser = await User.isUserExists(email, phoneNumber);
+    const existingUser = await User.isUserExists(email, phone);
     if (existingUser) {
       return res.status(400).json({ message: "Email or phone number already in use." });
     }
 
     // Tạo người dùng mới (model tự xử lý các logic như mã hóa mật khẩu)
     const newUser = await User.create({
-      userName,
+      username,
       password,
       email,
-      phoneNumber,
+      phone,
     });
 
     // Trả về phản hồi thành công
@@ -32,9 +32,9 @@ export const userRegister = async (req, res) => {
       message: "User registered successfully!",
       user: {
         userId: newUser.userId,
-        userName: newUser.userName,
+        userName: newUser.username,
         email: newUser.email,
-        phoneNumber: newUser.phoneNumber,
+        phoneNumber: newUser.phone,
       },
     });
   } catch (error) {
@@ -62,11 +62,14 @@ export const userLogin = async (req, res) => {
     // Kiểm tra người dùng có tồn tại hay không
     const user = await User.findOne({ email });
     if (!user) {
+      console.log("User not found");
+      
       return res.status(401).json({ message: "Invalid credentials." });
     }
     // Kiểm tra mật khẩu đúng hay không
     const isPasswordValid = await user.isPasswordCorrect(password);
     if (!isPasswordValid) {
+      console.log("Password is incorrect");
       return res.status(401).json({ message: "Invalid credentials." });
     }
 
