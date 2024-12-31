@@ -166,7 +166,7 @@ const LoginScreen = ({ navigation }) => {
             placeholder="Email"
             value={email}
             onChangeText={setEmail}
-            keyboardType="phone-pad"
+            keyboardType="email-address"
           />
           <View style={styles.passwordContainer}>
             <TextInput

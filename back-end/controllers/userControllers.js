@@ -6,25 +6,25 @@ import bcrypt from 'bcrypt';
 // REGISTER
 export const userRegister = async (req, res) => {
   try {
-    const { username, email, phone, password } = req.body;
+    const { userName, email, phoneNumber, password } = req.body;
 
     // Kiểm tra thông tin cần thiết
-    if (!username || !password || !email) {
+    if (!userName || !password || !email) {
       return res.status(400).json({ message: "All required fields must be provided." });
     }
 
     // Kiểm tra email hoặc số điện thoại đã tồn tại
-    const existingUser = await User.isUserExists(email, phone);
+    const existingUser = await User.isUserExists(email, phoneNumber);
     if (existingUser) {
       return res.status(400).json({ message: "Email or phone number already in use." });
     }
 
     // Tạo người dùng mới (model tự xử lý các logic như mã hóa mật khẩu)
     const newUser = await User.create({
-      username,
+      userName,
       password,
       email,
-      phone,
+      phoneNumber,
     });
 
     // Trả về phản hồi thành công
@@ -32,9 +32,9 @@ export const userRegister = async (req, res) => {
       message: "User registered successfully!",
       user: {
         userId: newUser.userId,
-        userName: newUser.username,
+        userName: newUser.userName,
         email: newUser.email,
-        phoneNumber: newUser.phone,
+        phoneNumber: newUser.phoneNumber,
       },
     });
   } catch (error) {
