@@ -27,7 +27,7 @@ const AddTaskToGroup = ({ navigation, route }) => {
             const list = { listId: groupId, name: groupName, userId: person, familyList: true };
             addList(list);
 
-            const task = { id: Math.random().toString(), listId: groupId, text: itemName, count: count, unit: unit, completed: false };
+            const task = { id: Math.random().toString(), listId: groupId, userId: person, text: itemName, count: count, unit: unit, completed: false };
             addTask(task);
 
             addTaskToGroup(groupId, task.id);

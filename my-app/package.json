@@ -23,6 +23,7 @@
     "expo": "~52.0.7",
     "expo-constants": "^17.0.3",
     "expo-status-bar": "~2.0.0",
+    "ios": "^0.0.1",
     "my-app": "file:",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
