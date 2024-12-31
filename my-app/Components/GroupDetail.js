@@ -1,26 +1,43 @@
 import React, { useState, useLayoutEffect, useContext } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { ShopContext } from '../Context/ShopContext';
 
 const GroupDetail = ({ navigation, route }) => {
-  // Sample data for the FlatList
-  const [data, setData] = useState([
-    { id: '1', name: 'Item 1' },
-    { id: '2', name: 'Item 2' },
-    { id: '3', name: 'Item 3' },
-    { id: '4', name: 'Item 4' },
-    { id: '5', name: 'Item 5' },
-    { id: '6', name: 'Item 6' },
-  ]);
 
   const { groupId, groupName, bossId } = route.params;
-  const { removeGroup } = useContext(ShopContext);
+  const { removeGroup, tasks, removeTask } = useContext(ShopContext);
+
+  //const [data, setData] = useState(tasks.filter(task => task.listId === groupId));
+  const data = tasks.filter(task => task.listId === groupId);
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: groupName, // Dynamically set the title here
     });
   }, [groupName]);
+
+  const groupByUserId = (tasks) => {
+    return tasks.reduce((acc, task) => {
+      if (!acc[task.userId]) {
+        acc[task.userId] = [];
+      }
+      acc[task.userId].push(task);
+      return acc;
+    }, {});
+  };
+
+  const groupedTasks = Object.values(groupByUserId(data)).flat();
+
+  const trashButtonHandler = (taskId, userId) => {
+            if (bossId === userId) {
+                removeTask(taskId);
+            }
+            else {
+                Alert.alert('Bạn không thể xóa công việc nhóm', 
+                    'Xin hay liên hệ với trưởng nhóm để thay đổi điều này');
+            }
+        };
 
   // Button press handlers
   const handleButton1Press = () => {
@@ -62,14 +79,24 @@ const GroupDetail = ({ navigation, route }) => {
 
       {/* FlatList displaying items */}
       <FlatList
-        data={data}
-        renderItem={({ item }) => (
-          <View style={styles.itemContainer}>
-            <Text style={styles.itemText}>{item.name}</Text>
-          </View>
-        )}
-        keyExtractor={(item) => item.id}
-      />
+              data={groupedTasks}
+              renderItem={({ item, index }) => (
+                  <View style={[styles.taskContainer, item.completed && styles.completedTaskContainer]}>
+                    <Text style={[styles.taskText, item.completed && styles.completedTask]}>
+                      {item.count + ' ' + item.unit + ' ' + item.text}
+                    </Text>
+                    <Text style={[ { color: 'blue', fontSize: 16, fontWeight: 'bold', fontStyle: 'italic' }]}>
+                      {item.userId}
+                    </Text>
+                    <TouchableOpacity onPress={() => trashButtonHandler(item.id, item.userId)}>
+                      {/*<Text style={styles.removeButtonText}>Bỏ</Text>*/}
+                      <Icon name="trash" size={35} color="purple" />
+                    </TouchableOpacity>
+                  </View>
+              )}
+              keyExtractor={(item, index) => index.toString()}
+              style={styles.taskList}
+            />
 
       <TouchableOpacity
         style={styles.fab}
@@ -85,6 +112,32 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
+  },
+  taskContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: 'moccasin',
+    marginVertical: 5,
+    borderRadius: 5,
+    borderColor: '#ddd',
+    borderWidth: 1,
+  },
+  completedTaskContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: 'gray',
+    marginVertical: 5,
+    borderRadius: 5,
+    borderColor: '#ddd',
+    borderWidth: 1,
+  },
+  completedTask: {
+    textDecorationLine: 'line-through',
+    color: '#bbb',
   },
   buttonRow: {
     flexDirection: 'row', // Align buttons horizontally in the same row

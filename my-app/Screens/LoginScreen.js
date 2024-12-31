@@ -11,6 +11,9 @@ import {
   Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import Constants from 'expo-constants';
+
+const API_URL = Constants.expoConfig.extra.API_URL;
 
 const LoginScreen = ({ navigation }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -27,18 +30,56 @@ const LoginScreen = ({ navigation }) => {
   const [forgotPhone, setForgotPhone] = useState("");
   const [forgotSuccess, setForgotSuccess] = useState(false);
 
-  const handleLogin = () => {
-    if (!phone || !password) {
+  const handleLogin = async () => {
+    if (!email || !password) {
       Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!");
       return;
     }
-    if (phone === "0000" && password === "password") {
-      Alert.alert("Đăng nhập thành công!","Nhóm 18");
-      navigation.navigate("Home");
-    } else {
-      Alert.alert("Lỗi", "Sai tài khoản hoặc mật khẩu!");
+    try {
+      const response = await fetch(`${API_URL}/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        Alert.alert("Đăng nhập thành công!", "Nhóm 18");
+        navigation.navigate("Home");
+      } else {
+        Alert.alert("Lỗi", data.message || "Sai tài khoản hoặc mật khẩu!");
+      }
+    } catch (error) {
+      Alert.alert("Lỗi", "Có lỗi xảy ra. Vui lòng thử lại!");
     }
   };
+
+  const handleRegister = async () => {
+    if (!username || !email || !phone || !password || !confirmPassword) {
+      Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!");
+      return;
+    }
+    if (password !== confirmPassword) {
+      Alert.alert("Lỗi", "Mật khẩu và xác nhận mật khẩu không khớp!");
+      return;
+    }
+    try {
+      const response = await fetch(`${API_URL}/user/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, phone, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        Alert.alert("Thành công", "Đăng ký thành công!");
+        setIsLogin(true);
+      } else {
+        Alert.alert("Lỗi", data.message || "Đăng ký không thành công!");
+      }
+    } catch (error) {
+      Alert.alert("Lỗi", "Có lỗi xảy ra. Vui lòng thử lại!");
+    }
+  };
+
 
   const handleForgotPassword = () => {
     if (!forgotEmail && !forgotPhone) {
@@ -111,18 +152,7 @@ const LoginScreen = ({ navigation }) => {
           </View>
           <Button
             title="Đăng Ký"
-            onPress={() => {
-              if (!username || !email || !phone || !password || !confirmPassword) {
-                Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!");
-                return;
-              }
-              if (password !== confirmPassword) {
-                Alert.alert("Lỗi", "Mật khẩu và xác nhận mật khẩu không khớp!");
-                return;
-              }
-              Alert.alert("Thành công", "Đăng ký thành công!");
-              setIsLogin(true);
-            }}
+            onPress={handleRegister}
           />
           <TouchableOpacity onPress={() => setIsLogin(true)}>
             <Text style={styles.link}>Đã có tài khoản? Đăng nhập</Text>
@@ -133,9 +163,9 @@ const LoginScreen = ({ navigation }) => {
           <Text style={styles.title}>Đăng Nhập</Text>
           <TextInput
             style={styles.input}
-            placeholder="Số điện thoại"
-            value={phone}
-            onChangeText={setPhone}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
             keyboardType="phone-pad"
           />
           <View style={styles.passwordContainer}>
