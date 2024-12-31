@@ -11,6 +11,8 @@ import {
   Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import Constants from "expo-constants";
+const API_URL = Constants.expoConfig.extra.API_URL;
 
 const LoginScreen = ({ navigation }) => {
   const [isLogin, setIsLogin] = useState(true);
@@ -27,25 +29,54 @@ const LoginScreen = ({ navigation }) => {
   const [forgotPhone, setForgotPhone] = useState("");
   const [forgotSuccess, setForgotSuccess] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (!phone || !password) {
       Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!");
       return;
     }
-    if (phone === "0000" && password === "password") {
-      Alert.alert("Đăng nhập thành công!","Nhóm 18");
-      navigation.navigate("Home");
-    } else {
-      Alert.alert("Lỗi", "Sai tài khoản hoặc mật khẩu!");
+    try {
+      const response = await fetch(`${API_URL}/user/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        Alert.alert("Đăng nhập thành công!", "Nhóm 18");
+        navigation.navigate("Home");
+      } else {
+        Alert.alert("Lỗi", data.message || "Sai tài khoản hoặc mật khẩu!");
+      }
+    } catch (error) {
+      Alert.alert("Lỗi", "Có lỗi xảy ra. Vui lòng thử lại!");
     }
   };
 
-  const handleForgotPassword = () => {
-    if (!forgotEmail && !forgotPhone) {
-      Alert.alert("Lỗi", "Vui lòng nhập email hoặc số điện thoại!");
+  const handleRegister = async () => {
+    if (!username || !email || !phone || !password || !confirmPassword) {
+      Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!");
       return;
     }
-    setForgotSuccess(true);
+    if (password !== confirmPassword) {
+      Alert.alert("Lỗi", "Mật khẩu và xác nhận mật khẩu không khớp!");
+      return;
+    }
+    try {
+      const response = await fetch(`${API_URL}/user/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, phone, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        Alert.alert("Thành công", "Đăng ký thành công!");
+        setIsLogin(true);
+      } else {
+        Alert.alert("Lỗi", data.message || "Đăng ký thất bại!");
+      }
+    } catch (error) {
+      Alert.alert("Lỗi", "Có lỗi xảy ra. Vui lòng thử lại!");
+    }
   };
 
   return (
@@ -111,18 +142,7 @@ const LoginScreen = ({ navigation }) => {
           </View>
           <Button
             title="Đăng Ký"
-            onPress={() => {
-              if (!username || !email || !phone || !password || !confirmPassword) {
-                Alert.alert("Lỗi", "Vui lòng điền đầy đủ thông tin!");
-                return;
-              }
-              if (password !== confirmPassword) {
-                Alert.alert("Lỗi", "Mật khẩu và xác nhận mật khẩu không khớp!");
-                return;
-              }
-              Alert.alert("Thành công", "Đăng ký thành công!");
-              setIsLogin(true);
-            }}
+            onPress={handleRegister}
           />
           <TouchableOpacity onPress={() => setIsLogin(true)}>
             <Text style={styles.link}>Đã có tài khoản? Đăng nhập</Text>
@@ -167,55 +187,6 @@ const LoginScreen = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       )}
-
-      <Modal
-        animationType="slide"
-        transparent={true}
-        visible={forgotPasswordModalVisible}
-        onRequestClose={() => setForgotPasswordModalVisible(false)}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContainer}>
-            {!forgotSuccess ? (
-              <>
-                <Text style={styles.modalTitle}>Quên Mật Khẩu</Text>
-                <TextInput
-                  style={styles.input}
-                  placeholder="Nhập email"
-                  value={forgotEmail}
-                  onChangeText={setForgotEmail}
-                  keyboardType="email-address"
-                />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Nhập số điện thoại"
-                  value={forgotPhone}
-                  onChangeText={setForgotPhone}
-                  keyboardType="phone-pad"
-                />
-                <Button title="Gửi" onPress={handleForgotPassword} />
-                <TouchableOpacity
-                  onPress={() => setForgotPasswordModalVisible(false)}
-                >
-                  <Text style={styles.modalClose}>Hủy</Text>
-                </TouchableOpacity>
-              </>
-            ) : (
-              <>
-                <Text style={styles.modalTitle}>Yêu cầu thành công!</Text>
-                <Text style={styles.modalMessage}>
-                  Chúng tôi đã gửi hướng dẫn khôi phục mật khẩu đến{" "}
-                  {forgotEmail || forgotPhone}.
-                </Text>
-                <Button
-                  title="Đóng"
-                  onPress={() => setForgotPasswordModalVisible(false)}
-                />
-              </>
-            )}
-          </View>
-        </View>
-      </Modal>
     </ScrollView>
   );
 };
@@ -230,78 +201,15 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: "100%",
-    backgroundColor: "#fff",
-    borderRadius: 10,
     padding: 20,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    marginBottom: 20,
-    textAlign: "center",
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 15,
-  },
-  passwordContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 5,
-    marginBottom: 15,
-    paddingHorizontal: 10,
-  },
-  passwordInput: {
-    flex: 1,
-    paddingVertical: 10,
-  },
-  link: {
-    marginTop: 15,
-    color: "#007BFF",
-    textAlign: "center",
-  },
-  modalOverlay: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
-  modalContainer: {
-    width: "80%",
-    backgroundColor: "#fff",
+    backgroundColor: "#ffffff",
     borderRadius: 10,
-    padding: 20,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 10 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 10,
+    shadowRadius: 4,
     elevation: 5,
-  },
-  modalTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
     marginBottom: 20,
-    textAlign: "center",
-  },
-  modalMessage: {
-    fontSize: 16,
-    textAlign: "center",
-    marginBottom: 20,
-  },
-  modalClose: {
-    marginTop: 15,
-    color: "#FF0000",
-    textAlign: "center",
   },
 });
 
